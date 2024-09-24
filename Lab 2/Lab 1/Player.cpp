@@ -61,7 +61,7 @@ void Player::playerRotation()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		rotation -= 1.5;
+		rotation -= rotationSpeed;
 		if (rotation < 0)
 		{
 			rotation = 359;
@@ -69,7 +69,7 @@ void Player::playerRotation()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		rotation += 1.5;
+		rotation += rotationSpeed;
 		if (rotation > 360)
 		{
 			rotation = 1;
@@ -101,4 +101,18 @@ void Player::keepPlayerOnScreen()
 sf::Vector2f Player::returnPlayerPos()
 {
 	return position;
+}
+
+sf::Vector2f Player::returnPlayerPredictedPos()
+{
+	sf::Vector2f predictedPos;
+
+	predictedPos = position;
+
+	float radians = rotation * 3.14 / 180;
+
+	predictedPos.x += sin(radians) * (velocity*30);//the position the player will approximately be at in 30 updates
+	predictedPos.y -= cos(radians) * (velocity*30);
+
+	return predictedPos;
 }

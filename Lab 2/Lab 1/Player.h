@@ -12,6 +12,7 @@ public:
 	void keepPlayerOnScreen();
 
 	sf::Vector2f returnPlayerPos();
+	sf::Vector2f returnPlayerPredictedPos();
 
 private:
 	float rotation = 0.0;
@@ -20,6 +21,7 @@ private:
 	float acceleration = 1.06;
 	float decceleration = 0.94;
 	float drag = 0.99;
+	float rotationSpeed = 2.0f;
 
 	sf::Vector2f position = { 0,0 };
 

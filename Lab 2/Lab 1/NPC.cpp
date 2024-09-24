@@ -2,7 +2,7 @@
 #include "random"
 
 NPC::NPC(sf::Vector2f SpawnPosition, float speed, BehaviourEnum startBehaviour)
-	: currentBehaviour(startBehaviour)
+	: currentBehaviour(startBehaviour) ,speed(speed), position(SpawnPosition)
 {
 	init();
 }
@@ -13,7 +13,6 @@ void NPC::init()
 	NPCShape.setScale(3, 5);
 	NPCShape.setFillColor(sf::Color::Red);
 	NPCShape.setRadius(5);
-	position = { 800, 500 };
 	NPCShape.setPosition(position);
 	NPCShape.setOrigin(5, 5);
 }
@@ -22,9 +21,27 @@ void NPC::update(sf::Vector2f t_playerPos)
 {
 	playerPosition = t_playerPos;
 
-	position = NPCBehaviour.seekTarget(position, playerPosition);
+	newPosition = position;
+
+	if (currentBehaviour == BehaviourEnum::Seek || currentBehaviour == BehaviourEnum::Pursue)
+	{
+		newPosition = NPCBehaviour.vectorToTarget(position, playerPosition);
+	}
+	else if (currentBehaviour == BehaviourEnum::Wander)
+	{
+		newPosition = NPCBehaviour.wander(position);
+	}
+
+	position = sf::Vector2f{ position.x + (newPosition.x * speed),position.y + (newPosition.y * speed) };
 
 	keepNPCOnScreen();
+
+	if (currentBehaviour == BehaviourEnum::Wander)
+	{
+		sf::Vector2f wanderRotate = sf::Vector2f{ position.x + (newPosition.x * 10),position.y + (newPosition.y * 10) };// look at a position that is ahead of where we are moving 
+		rotateToTarget(wanderRotate);
+	}
+	else rotateToTarget(playerPosition);
 
 	NPCShape.setPosition(position);
 }
@@ -53,4 +70,13 @@ void NPC::keepNPCOnScreen()
 	{
 		position.y = SCREEN_SIZE.y + 10;
 	}
+}
+
+void NPC::rotateToTarget(sf::Vector2f t_target)
+{
+	sf::Vector2f angleToTarget = t_target - position;
+
+	float radians = atan2(angleToTarget.y, angleToTarget.x);
+
+	NPCShape.setRotation((radians * 180 / 3.14f) + 90);
 }
