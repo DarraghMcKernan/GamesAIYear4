@@ -9,6 +9,13 @@ void Player::init()
 	position = { 400, 500 };
 	playerShape.setPosition(position);
 	playerShape.setOrigin(5, 5);
+
+	VisionCone.setPointCount(3);
+	VisionCone.setScale(3, -5);
+	VisionCone.setFillColor(sf::Color(0,0,255,50));
+	VisionCone.setRadius(40);
+	VisionCone.setPosition(position);
+	VisionCone.setOrigin(40, 0);
 }
 
 void Player::update()
@@ -25,11 +32,15 @@ void Player::update()
 
 	playerShape.setRotation(rotation);
 	playerShape.setPosition(position);
+
+	VisionCone.setRotation(rotation);
+	VisionCone.setPosition(position);
 }
 
 void Player::render(sf::RenderWindow& t_window)
 {
-	t_window.draw(playerShape);
+	t_window.draw(VisionCone);
+	t_window.draw(playerShape);	
 }
 
 void Player::playerMovement()

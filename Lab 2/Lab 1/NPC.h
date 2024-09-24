@@ -21,6 +21,7 @@ private:
 	float speed = 1.0f;
 
 	sf::CircleShape NPCShape;
+	sf::CircleShape VisionCone;
 
 	BehaviourEnum currentBehaviour = BehaviourEnum::Wander;
 	Behaviour NPCBehaviour;

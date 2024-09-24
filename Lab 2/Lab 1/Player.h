@@ -26,6 +26,7 @@ private:
 	sf::Vector2f position = { 0,0 };
 
 	sf::CircleShape playerShape;
+	sf::CircleShape VisionCone;
 
 	sf::Sprite playerSprite;
 	sf::Texture playerTexture;

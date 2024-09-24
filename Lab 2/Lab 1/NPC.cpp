@@ -15,6 +15,13 @@ void NPC::init()
 	NPCShape.setRadius(5);
 	NPCShape.setPosition(position);
 	NPCShape.setOrigin(5, 5);
+
+	VisionCone.setPointCount(3);
+	VisionCone.setScale(3, -5);
+	VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
+	VisionCone.setRadius(40);
+	VisionCone.setPosition(position);
+	VisionCone.setOrigin(40, 0);
 }
 
 void NPC::update(sf::Vector2f t_playerPos)
@@ -44,10 +51,12 @@ void NPC::update(sf::Vector2f t_playerPos)
 	else rotateToTarget(playerPosition);
 
 	NPCShape.setPosition(position);
+	VisionCone.setPosition(position);
 }
 
 void NPC::render(sf::RenderWindow& t_window)
 {
+	t_window.draw(VisionCone);
 	t_window.draw(NPCShape);
 }
 
@@ -79,4 +88,5 @@ void NPC::rotateToTarget(sf::Vector2f t_target)
 	float radians = atan2(angleToTarget.y, angleToTarget.x);
 
 	NPCShape.setRotation((radians * 180 / 3.14f) + 90);
+	VisionCone.setRotation((radians * 180 / 3.14f) + 90);
 }
