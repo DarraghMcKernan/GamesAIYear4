@@ -38,6 +38,14 @@ void NPC::update(sf::Vector2f t_playerPos)
 	{
 		newPosition = NPCBehaviour.wander(position);
 	}
+	else if (currentBehaviour == BehaviourEnum::Arrive)
+	{
+		newPosition = NPCBehaviour.arrive(position, playerPosition);
+	}
+	else if (currentBehaviour == BehaviourEnum::ArriveSlow)
+	{
+		newPosition = NPCBehaviour.arriveSlow(position, playerPosition);
+	}
 
 	position = sf::Vector2f{ position.x + (newPosition.x * speed),position.y + (newPosition.y * speed) };
 

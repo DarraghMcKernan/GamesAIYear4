@@ -33,6 +33,8 @@ void main()
 	NPC seekNPC(sf::Vector2f{ 100, 100 },2.0f,BehaviourEnum::Seek);
 	NPC pursueNPC(sf::Vector2f{ 400, 100 },2.0f,BehaviourEnum::Pursue);
 	NPC wander(sf::Vector2f{ 100, 700 },2.0f,BehaviourEnum::Wander);
+	NPC arrive(sf::Vector2f{ 800, 700 },2.0f,BehaviourEnum::Arrive);
+	NPC arriveSlow(sf::Vector2f{ 1000, 400 },2.0f,BehaviourEnum::ArriveSlow);
 
 	myPlayer.init();
 
@@ -53,6 +55,8 @@ void main()
 			seekNPC.update(myPlayer.returnPlayerPos());
 			pursueNPC.update(myPlayer.returnPlayerPredictedPos());
 			wander.update(myPlayer.returnPlayerPredictedPos());
+			arrive.update(myPlayer.returnPlayerPredictedPos());
+			arriveSlow.update(myPlayer.returnPlayerPredictedPos());
 
 
 			window.clear(sf::Color::Black);
@@ -61,6 +65,8 @@ void main()
 			seekNPC.render(window);
 			pursueNPC.render(window);
 			wander.render(window);
+			arrive.render(window);
+			arriveSlow.render(window);
 
 			window.display();
 
