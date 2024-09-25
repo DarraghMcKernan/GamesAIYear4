@@ -32,9 +32,17 @@ void main()
 	Player myPlayer;
 	NPC seekNPC(sf::Vector2f{ 100, 100 },2.0f,BehaviourEnum::Seek);
 	NPC pursueNPC(sf::Vector2f{ 400, 100 },2.0f,BehaviourEnum::Pursue);
-	NPC wander(sf::Vector2f{ 100, 700 },2.0f,BehaviourEnum::Wander);
-	NPC arrive(sf::Vector2f{ 800, 700 },2.0f,BehaviourEnum::Arrive);
-	NPC arriveSlow(sf::Vector2f{ 1000, 400 },2.0f,BehaviourEnum::ArriveSlow);
+	NPC wanderNPC(sf::Vector2f{ 100, 700 },2.0f,BehaviourEnum::Wander);
+	NPC arriveNPC(sf::Vector2f{ 800, 700 },2.0f,BehaviourEnum::Arrive);
+	NPC arriveSlowNPC(sf::Vector2f{ 1000, 400 },2.0f,BehaviourEnum::ArriveSlow);
+
+	bool seekActive = false;
+	bool pursueActive = false;
+	bool wanderActive = false;
+	bool arriveActive = false;
+	bool arriveSlowActive = false;
+
+	int buttonPressCooldown = 0;
 
 	myPlayer.init();
 
@@ -52,21 +60,86 @@ void main()
 		if (timeSinceLastUpdate > timePerFrame)
 		{
 			myPlayer.update();
-			seekNPC.update(myPlayer.returnPlayerPos());
-			pursueNPC.update(myPlayer.returnPlayerPredictedPos());
-			wander.update(myPlayer.returnPlayerPredictedPos());
-			arrive.update(myPlayer.returnPlayerPos());
-			arriveSlow.update(myPlayer.returnPlayerPos());
 
+			if (buttonPressCooldown > 0)
+			{
+				buttonPressCooldown--;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && buttonPressCooldown == 0)
+			{
+				if (seekActive == true)
+				{
+					seekActive = false;
+				}
+				else seekActive = true;
+				buttonPressCooldown = 10;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) && buttonPressCooldown == 0)
+			{
+				if (pursueActive == true)
+				{
+					pursueActive = false;
+				}
+				else pursueActive = true;
+				buttonPressCooldown = 10;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) && buttonPressCooldown == 0)
+			{
+				if (wanderActive == true)
+				{
+					wanderActive = false;
+				}
+				else wanderActive = true;
+				buttonPressCooldown = 10;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) && buttonPressCooldown == 0)
+			{
+				if (arriveActive == true)
+				{
+					arriveActive = false;
+				}
+				else arriveActive = true;
+				buttonPressCooldown = 10;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) && buttonPressCooldown == 0)
+			{
+				if (arriveSlowActive == true)
+				{
+					arriveSlowActive = false;
+				}
+				else arriveSlowActive = true;
+				buttonPressCooldown = 10;
+			}
 
 			window.clear(sf::Color::Black);
-
 			myPlayer.render(window);
-			seekNPC.render(window);
-			pursueNPC.render(window);
-			wander.render(window);
-			arrive.render(window);
-			arriveSlow.render(window);
+
+			if (seekActive == true)
+			{
+				seekNPC.update(myPlayer.returnPlayerPos());
+				seekNPC.render(window);
+			}
+			if (pursueActive == true)
+			{
+				pursueNPC.update(myPlayer.returnPlayerPredictedPos());
+				pursueNPC.render(window);
+			}
+			if (wanderActive == true)
+			{
+				wanderNPC.update(myPlayer.returnPlayerPredictedPos());
+				wanderNPC.render(window);
+			}
+			if (arriveActive == true)
+			{
+				arriveNPC.update(myPlayer.returnPlayerPos());
+				arriveNPC.render(window);
+			}
+			if (arriveSlowActive == true)
+			{
+				arriveSlowNPC.update(myPlayer.returnPlayerPos());
+				arriveSlowNPC.render(window);
+			}
 
 			window.display();
 

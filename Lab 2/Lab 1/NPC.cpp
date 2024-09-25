@@ -28,7 +28,7 @@ void NPC::init()
 		std::cout << "Error loading font\n";
 	}
 	NPCNametag.setFont(font);
-	NPCNametag.setCharacterSize(30);
+	NPCNametag.setCharacterSize(20);
 
 	if (currentBehaviour == BehaviourEnum::Seek)
 	{
