@@ -21,7 +21,7 @@ private:
 	float acceleration = 1.06;
 	float decceleration = 0.94;
 	float drag = 0.99;
-	float rotationSpeed = 2.0f;
+	float rotationSpeed = 3.0f;
 
 	sf::Vector2f position = { 0,0 };
 

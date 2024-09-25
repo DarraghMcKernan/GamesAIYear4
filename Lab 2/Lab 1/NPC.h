@@ -20,6 +20,9 @@ private:
 
 	float speed = 1.0f;
 
+	sf::Text NPCNametag;
+	sf::Font font;
+
 	sf::CircleShape NPCShape;
 	sf::CircleShape VisionCone;
 

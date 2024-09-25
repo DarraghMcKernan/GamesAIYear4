@@ -55,8 +55,8 @@ void main()
 			seekNPC.update(myPlayer.returnPlayerPos());
 			pursueNPC.update(myPlayer.returnPlayerPredictedPos());
 			wander.update(myPlayer.returnPlayerPredictedPos());
-			arrive.update(myPlayer.returnPlayerPredictedPos());
-			arriveSlow.update(myPlayer.returnPlayerPredictedPos());
+			arrive.update(myPlayer.returnPlayerPos());
+			arriveSlow.update(myPlayer.returnPlayerPos());
 
 
 			window.clear(sf::Color::Black);

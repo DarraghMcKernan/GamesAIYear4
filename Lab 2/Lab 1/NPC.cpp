@@ -22,6 +22,34 @@ void NPC::init()
 	VisionCone.setRadius(40);
 	VisionCone.setPosition(position);
 	VisionCone.setOrigin(40, 0);
+
+	if (!font.loadFromFile("Assets/Fonts/BebasNeue.otf"))
+	{
+		std::cout << "Error loading font\n";
+	}
+	NPCNametag.setFont(font);
+	NPCNametag.setCharacterSize(30);
+
+	if (currentBehaviour == BehaviourEnum::Seek)
+	{
+		NPCNametag.setString("Seek");
+	}
+	if (currentBehaviour == BehaviourEnum::Pursue)
+	{
+		NPCNametag.setString("Pursue");
+	}
+	if (currentBehaviour == BehaviourEnum::Arrive)
+	{
+		NPCNametag.setString("Arrive");
+	}
+	if (currentBehaviour == BehaviourEnum::ArriveSlow)
+	{
+		NPCNametag.setString("ArriveSlow");
+	}
+	if (currentBehaviour == BehaviourEnum::Wander)
+	{
+		NPCNametag.setString("Wander");
+	}
 }
 
 void NPC::update(sf::Vector2f t_playerPos)
@@ -60,12 +88,14 @@ void NPC::update(sf::Vector2f t_playerPos)
 
 	NPCShape.setPosition(position);
 	VisionCone.setPosition(position);
+	NPCNametag.setPosition(position);
 }
 
 void NPC::render(sf::RenderWindow& t_window)
 {
 	t_window.draw(VisionCone);
 	t_window.draw(NPCShape);
+	t_window.draw(NPCNametag);
 }
 
 void NPC::keepNPCOnScreen()
