@@ -19,7 +19,7 @@ sf::Vector2f Behaviour::wander(const sf::Vector2f t_thisPos)
 	wanderTimer--;
 	if (wanderTimer < 0)
 	{
-		wanderTimer = rand()%300;
+		wanderTimer = (rand()%200) + 100;
 
 		sf::Vector2f randomPoint;
 
