@@ -17,6 +17,7 @@ private:
 	sf::Vector2f position = { 0,0 };
 	sf::Vector2f playerPosition = { 0,0 };
 	sf::Vector2f newPosition = { 0,0 };
+	sf::Vector2f velocity = { 0,0 };
 
 	float speed = 1.0f;
 

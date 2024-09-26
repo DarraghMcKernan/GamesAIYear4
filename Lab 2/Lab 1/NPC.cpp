@@ -74,7 +74,7 @@ void NPC::update(sf::Vector2f t_playerPos)
 	{
 		newPosition = NPCBehaviour.arriveSlow(position, playerPosition);
 	}
-
+	
 	position = sf::Vector2f{ position.x + (newPosition.x * speed),position.y + (newPosition.y * speed) };
 
 	keepNPCOnScreen();

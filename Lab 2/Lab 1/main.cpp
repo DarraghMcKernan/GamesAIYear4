@@ -36,6 +36,17 @@ void main()
 	NPC arriveNPC(sf::Vector2f{ 800, 700 },2.0f,BehaviourEnum::Arrive);
 	NPC arriveSlowNPC(sf::Vector2f{ 1000, 400 },2.0f,BehaviourEnum::ArriveSlow);
 
+	sf::Text prompt;
+	sf::Font font;
+
+	if (!font.loadFromFile("Assets/Fonts/BebasNeue.otf"))
+	{
+		std::cout << "Error loading font\n";
+	}
+	prompt.setFont(font);
+	prompt.setCharacterSize(30);
+	prompt.setString("Toggle enemies using 1-5");
+
 	bool seekActive = false;
 	bool pursueActive = false;
 	bool wanderActive = false;
@@ -127,7 +138,7 @@ void main()
 			}
 			if (wanderActive == true)
 			{
-				wanderNPC.update(myPlayer.returnPlayerPredictedPos());
+				wanderNPC.update(myPlayer.returnPlayerPos());
 				wanderNPC.render(window);
 			}
 			if (arriveActive == true)
@@ -140,6 +151,8 @@ void main()
 				arriveSlowNPC.update(myPlayer.returnPlayerPos());
 				arriveSlowNPC.render(window);
 			}
+
+			window.draw(prompt);
 
 			window.display();
 
