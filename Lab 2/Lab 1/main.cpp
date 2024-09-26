@@ -30,7 +30,7 @@ void main()
 	clock.restart();
 	
 	Player myPlayer;
-	NPC seekNPC(sf::Vector2f{ 100, 100 },2.0f,BehaviourEnum::Seek);
+	NPC seekNPC(sf::Vector2f{ 100, 400 },2.0f,BehaviourEnum::Seek);
 	NPC pursueNPC(sf::Vector2f{ 400, 100 },2.0f,BehaviourEnum::Pursue);
 	NPC wanderNPC(sf::Vector2f{ 100, 700 },2.0f,BehaviourEnum::Wander);
 	NPC arriveNPC(sf::Vector2f{ 800, 700 },2.0f,BehaviourEnum::Arrive);

@@ -17,7 +17,7 @@ void NPC::init()
 	NPCShape.setOrigin(5, 5);
 
 	VisionCone.setPointCount(3);
-	VisionCone.setScale(3, -5);
+	VisionCone.setScale(3.3, -5);
 	VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
 	VisionCone.setRadius(40);
 	VisionCone.setPosition(position);
@@ -78,16 +78,23 @@ void NPC::update(sf::Vector2f t_playerPos)
 
 	velocity *= friction;
 
-	position += velocity;
+	//position += velocity;
 
 	keepNPCOnScreen();
 
 	if (currentBehaviour == BehaviourEnum::Wander)
 	{
 		sf::Vector2f wanderRotate = sf::Vector2f{ position.x + (velocity.x * 10),position.y + (velocity.y * 10) };// look at a position that is ahead of where we are moving 
-		rotateToTarget(wanderRotate);
+		NPCShape.setRotation(rotateToTarget(wanderRotate));
+		VisionCone.setRotation(rotateToTarget(wanderRotate));
 	}
-	else rotateToTarget(playerPosition);
+	else
+	{
+		NPCShape.setRotation(rotateToTarget(playerPosition));
+		VisionCone.setRotation(rotateToTarget(playerPosition));
+	}
+
+	visionConeView();
 
 	NPCShape.setPosition(position);
 	VisionCone.setPosition(position);
@@ -122,12 +129,30 @@ void NPC::keepNPCOnScreen()
 	}
 }
 
-void NPC::rotateToTarget(sf::Vector2f t_target)
+float NPC::rotateToTarget(sf::Vector2f t_target)
 {
 	sf::Vector2f angleToTarget = t_target - position;
 
 	float radians = atan2(angleToTarget.y, angleToTarget.x);
 
-	NPCShape.setRotation((radians * 180 / 3.14f) + 90);
-	VisionCone.setRotation((radians * 180 / 3.14f) + 90);
+	return (radians * 180 / 3.14f) + 90;
+}
+
+void NPC::visionConeView()
+{
+	float angleForward = NPCShape.getRotation();
+
+	float angleToPlayer = rotateToTarget(playerPosition);
+
+	if (angleToPlayer > angleForward - 30 && angleToPlayer < angleForward + 30)
+	{
+		sf::Vector2f vectorToPoint = playerPosition - position;
+		float distance = sqrt((vectorToPoint.x * vectorToPoint.x) + (vectorToPoint.y * vectorToPoint.y));
+		if (distance < 320)
+		{
+			VisionCone.setFillColor(sf::Color(0, 255, 0, 50));
+		}
+		else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
+	}
+	else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
 }

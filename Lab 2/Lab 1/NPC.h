@@ -11,7 +11,8 @@ public:
 	void update(sf::Vector2f t_playerPos);
 	void render(sf::RenderWindow& t_window);
 	void keepNPCOnScreen();
-	void rotateToTarget(sf::Vector2f t_target);
+	float rotateToTarget(sf::Vector2f t_target);
+	void visionConeView();
 
 private:
 	sf::Vector2f position = { 0,0 };
