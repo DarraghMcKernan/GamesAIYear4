@@ -16,6 +16,15 @@ void Player::init()
 	VisionCone.setRadius(40);
 	VisionCone.setPosition(position);
 	VisionCone.setOrigin(40, 0);
+
+	if (!playerTexture.loadFromFile("Assets/Images/F-22.png"))
+	{
+		std::cout << "error loading player sprite\n";
+	}
+	playerSprite.setTexture(playerTexture);
+	playerSprite.setPosition(position);
+	playerSprite.setScale(.1, .1);
+	playerSprite.setOrigin((playerSprite.getTextureRect().getSize().x/2)+50, playerSprite.getTextureRect().getSize().y/2);
 }
 
 void Player::update()
@@ -32,6 +41,9 @@ void Player::update()
 
 	playerShape.setRotation(rotation);
 	playerShape.setPosition(position);
+	
+	playerSprite.setRotation(rotation + 90);
+	playerSprite.setPosition(position);
 
 	VisionCone.setRotation(rotation);
 	VisionCone.setPosition(position);
@@ -40,7 +52,8 @@ void Player::update()
 void Player::render(sf::RenderWindow& t_window)
 {
 	t_window.draw(VisionCone);
-	t_window.draw(playerShape);	
+	t_window.draw(playerSprite);
+	//t_window.draw(playerShape);	
 }
 
 void Player::playerMovement()

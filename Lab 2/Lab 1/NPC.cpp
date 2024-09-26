@@ -30,6 +30,15 @@ void NPC::init()
 	NPCNametag.setFont(font);
 	NPCNametag.setCharacterSize(20);
 
+	if (!NPCTexture.loadFromFile("Assets/Images/MIG-29.png"))
+	{
+		std::cout << "error loading NPC sprite\n";
+	}
+	NPCSprite.setTexture(NPCTexture);
+	NPCSprite.setPosition(position);
+	NPCSprite.setScale(.03, .03);
+	NPCSprite.setOrigin((NPCSprite.getTextureRect().getSize().x / 2) + 100, NPCSprite.getTextureRect().getSize().y / 2);
+
 	if (currentBehaviour == BehaviourEnum::Seek)
 	{
 		NPCNametag.setString("Seek");
@@ -87,16 +96,23 @@ void NPC::update(sf::Vector2f t_playerPos)
 		sf::Vector2f wanderRotate = sf::Vector2f{ position.x + (velocity.x * 10),position.y + (velocity.y * 10) };// look at a position that is ahead of where we are moving 
 		NPCShape.setRotation(rotateToTarget(wanderRotate));
 		VisionCone.setRotation(rotateToTarget(wanderRotate));
+		NPCSprite.setRotation(rotateToTarget(wanderRotate) + 90);
 	}
 	else
 	{
 		NPCShape.setRotation(rotateToTarget(playerPosition));
 		VisionCone.setRotation(rotateToTarget(playerPosition));
+		NPCSprite.setRotation(rotateToTarget(playerPosition) + 90);
 	}
 
-	visionConeView();
+	if (currentBehaviour == BehaviourEnum::Pursue)
+	{
+		visionConeView(pursuitRealPlayerPos);
+	}
+	else visionConeView(playerPosition);
 
 	NPCShape.setPosition(position);
+	NPCSprite.setPosition(position);
 	VisionCone.setPosition(position);
 	NPCNametag.setPosition(position);
 }
@@ -104,7 +120,8 @@ void NPC::update(sf::Vector2f t_playerPos)
 void NPC::render(sf::RenderWindow& t_window)
 {
 	t_window.draw(VisionCone);
-	t_window.draw(NPCShape);
+	t_window.draw(NPCSprite);
+	//t_window.draw(NPCShape);
 	t_window.draw(NPCNametag);
 }
 
@@ -138,26 +155,35 @@ float NPC::rotateToTarget(sf::Vector2f t_target)
 	return (radians * 180 / 3.14f) + 90;
 }
 
-void NPC::visionConeView()
+void NPC::visionConeView(sf::Vector2f t_target)
 {
 	int angleForward = NPCShape.getRotation();
 
-	int angleToPlayer = rotateToTarget(playerPosition);
+	int angleToTarget = rotateToTarget(t_target);
 
 	angleForward = (angleForward % 360 + 360) % 360;//normalise the angle to be between 0 and 360 if not already
-	angleToPlayer = (angleToPlayer % 360 + 360) % 360;
+	angleToTarget = (angleToTarget % 360 + 360) % 360;
 
-	int angleDifference = angleForward - angleToPlayer;//get the distance between the angles
+	int angleDifference = angleForward - angleToTarget;//get the distance between the angles
+	if (angleDifference > 180)
+	{
+		angleDifference = 360 - angleDifference;
+	}
 
 	if (angleDifference <= 30)//if the difference is within 30 degrees
 	{
 		sf::Vector2f vectorToPoint = playerPosition - position;
 		float distance = sqrt((vectorToPoint.x * vectorToPoint.x) + (vectorToPoint.y * vectorToPoint.y));
-		if (distance < 320)
+		if (distance < 320)//ensure that the player isnt too far from the NPC
 		{
 			VisionCone.setFillColor(sf::Color(0, 255, 0, 50));
 		}
 		else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
 	}
 	else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
+}
+
+void NPC::setRealPlayerPos(sf::Vector2f t_realPos)
+{
+	pursuitRealPlayerPos = t_realPos;//to ensure the pursuit enemy looks for player in vision cone not the predicted player
 }

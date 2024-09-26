@@ -12,13 +12,15 @@ public:
 	void render(sf::RenderWindow& t_window);
 	void keepNPCOnScreen();
 	float rotateToTarget(sf::Vector2f t_target);
-	void visionConeView();
+	void visionConeView(sf::Vector2f t_target);
+	void setRealPlayerPos(sf::Vector2f t_realPos);
 
 private:
 	sf::Vector2f position = { 0,0 };
 	sf::Vector2f playerPosition = { 0,0 };
 	sf::Vector2f newPosition = { 0,0 };
 	sf::Vector2f velocity = { 0,0 };
+	sf::Vector2f pursuitRealPlayerPos = { 0,0 };
 
 	float speed = 1.0f;
 	float friction = 0.8f;
@@ -29,6 +31,9 @@ private:
 
 	sf::CircleShape NPCShape;
 	sf::CircleShape VisionCone;
+
+	sf::Sprite NPCSprite;
+	sf::Texture NPCTexture;
 
 	BehaviourEnum currentBehaviour = BehaviourEnum::Wander;
 	Behaviour NPCBehaviour;

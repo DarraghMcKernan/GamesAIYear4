@@ -17,7 +17,7 @@ public:
 private:
 	float rotation = 0.0;
 	float velocity = 0.0;
-	float maxVelocity = 4.0;
+	float maxVelocity = 5.0;
 	float acceleration = 1.06;
 	float decceleration = 0.94;
 	float drag = 0.99;

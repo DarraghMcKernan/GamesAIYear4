@@ -135,6 +135,7 @@ void main()
 			{
 				pursueNPC.update(myPlayer.returnPlayerPredictedPos());
 				pursueNPC.render(window);
+				pursueNPC.setRealPlayerPos(myPlayer.returnPlayerPos());
 			}
 			if (wanderActive == true)
 			{
