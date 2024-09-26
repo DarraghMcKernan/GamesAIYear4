@@ -55,7 +55,6 @@ void NPC::init()
 void NPC::update(sf::Vector2f t_playerPos)
 {
 	playerPosition = t_playerPos;
-
 	newPosition = position;
 
 	if (currentBehaviour == BehaviourEnum::Seek || currentBehaviour == BehaviourEnum::Pursue)
@@ -75,13 +74,17 @@ void NPC::update(sf::Vector2f t_playerPos)
 		newPosition = NPCBehaviour.arriveSlow(position, playerPosition);
 	}
 	
-	position = sf::Vector2f{ position.x + (newPosition.x * speed),position.y + (newPosition.y * speed) };
+	velocity += newPosition * acceleration;
+
+	velocity *= friction;
+
+	position += velocity;
 
 	keepNPCOnScreen();
 
 	if (currentBehaviour == BehaviourEnum::Wander)
 	{
-		sf::Vector2f wanderRotate = sf::Vector2f{ position.x + (newPosition.x * 10),position.y + (newPosition.y * 10) };// look at a position that is ahead of where we are moving 
+		sf::Vector2f wanderRotate = sf::Vector2f{ position.x + (velocity.x * 10),position.y + (velocity.y * 10) };// look at a position that is ahead of where we are moving 
 		rotateToTarget(wanderRotate);
 	}
 	else rotateToTarget(playerPosition);

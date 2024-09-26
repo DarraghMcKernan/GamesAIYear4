@@ -20,6 +20,8 @@ private:
 	sf::Vector2f velocity = { 0,0 };
 
 	float speed = 1.0f;
+	float friction = 0.8f;
+	float acceleration = 1.01f;
 
 	sf::Text NPCNametag;
 	sf::Font font;
