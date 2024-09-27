@@ -61,6 +61,20 @@ void NPC::init()
 	}
 }
 
+float NPC::rotateToVelocity()
+{
+	if (velocity.x == 0 && velocity.y == 0)
+	{
+		return NPCShape.getRotation();
+	}
+
+	float radians = atan2(velocity.y, velocity.x);
+
+	float angleInDegrees = radians * 180.0f / 3.14159f;
+
+	return angleInDegrees;
+}
+
 void NPC::update(sf::Vector2f t_playerPos)
 {
 	playerPosition = t_playerPos;
@@ -85,7 +99,15 @@ void NPC::update(sf::Vector2f t_playerPos)
 	
 	velocity += newPosition * acceleration;
 
-	velocity *= friction;
+	float distance = sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+
+	if (distance > 5.0f)//cap max velocity
+	{
+		velocity /= distance;
+		velocity *= 5.0f;
+	}
+
+	//velocity *= friction;
 
 	position += velocity;
 
@@ -100,9 +122,10 @@ void NPC::update(sf::Vector2f t_playerPos)
 	}
 	else
 	{
-		NPCShape.setRotation(rotateToTarget(playerPosition));
-		VisionCone.setRotation(rotateToTarget(playerPosition));
-		NPCSprite.setRotation(rotateToTarget(playerPosition) + 90);
+		float rotationAngle = rotateToVelocity();
+		NPCShape.setRotation(rotationAngle + 90);
+		VisionCone.setRotation(rotationAngle + 90);
+		NPCSprite.setRotation(rotationAngle + 180);
 	}
 
 	if (currentBehaviour == BehaviourEnum::Pursue)
@@ -182,9 +205,9 @@ void NPC::visionConeView(sf::Vector2f t_target)
 		{
 			VisionCone.setFillColor(sf::Color(0, 255, 0, 50));
 		}
-		else VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
+		else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
 	}
-	else VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
+	else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
 }
 
 void NPC::setRealPlayerPos(sf::Vector2f t_realPos)

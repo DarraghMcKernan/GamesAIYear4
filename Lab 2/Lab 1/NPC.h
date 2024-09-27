@@ -17,6 +17,7 @@ public:
 	sf::Vector2f getPos();
 private:
 	int normalizeAngle(int t_angle);
+	float rotateToVelocity();
 
 	sf::Vector2f position = { 0,0 };
 	sf::Vector2f playerPosition = { 0,0 };
@@ -25,7 +26,7 @@ private:
 	sf::Vector2f pursuitRealPlayerPos = { 0,0 };
 
 	float speed = 1.0f;
-	float friction = 0.8f;
+	float friction = 0.95f;
 	float acceleration = 1.01f;
 
 	sf::Text NPCNametag;

@@ -12,7 +12,7 @@ void Player::init()
 
 	VisionCone.setPointCount(3);
 	VisionCone.setScale(3.3, -5);
-	VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
+	VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
 	VisionCone.setRadius(40);
 	VisionCone.setPosition(position);
 	VisionCone.setOrigin(40, 0);
@@ -60,9 +60,9 @@ void Player::playerMovement()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		if (velocity == 0)
+		if (velocity <= 0.1f)
 		{
-			velocity = 0.3;//kickstart movement so there is a value to add velocity to
+			velocity = 0.3f;//kickstart movement so there is a value to add velocity to
 		}
 		velocity *= acceleration;
 		if (velocity > maxVelocity)
@@ -73,12 +73,13 @@ void Player::playerMovement()
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		velocity *= decceleration;
-		if (velocity < 0.3)//stop moving once the player has slowed down enough
-		{
-			velocity = 0;
-		}
 	}
 	else velocity *= drag;//slow down over time
+
+	if (velocity < 0.3)//stop moving once the player has slowed down enough
+	{
+		velocity = 0;
+	}
 }
 
 void Player::playerRotation()
