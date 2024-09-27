@@ -87,7 +87,7 @@ void NPC::update(sf::Vector2f t_playerPos)
 
 	velocity *= friction;
 
-	position += velocity;
+	//position += velocity;
 
 	keepNPCOnScreen();
 
@@ -157,24 +157,15 @@ float NPC::rotateToTarget(sf::Vector2f t_target)
 
 void NPC::visionConeView(sf::Vector2f t_target)
 {
-	int angleForward = NPCShape.getRotation();
+	float angleForward = NPCShape.getRotation();
 
-	int angleToTarget = rotateToTarget(t_target);
+	float angleToPlayer = rotateToTarget(t_target);
 
-	angleForward = (angleForward % 360 + 360) % 360;//normalise the angle to be between 0 and 360 if not already
-	angleToTarget = (angleToTarget % 360 + 360) % 360;
-
-	int angleDifference = angleForward - angleToTarget;//get the distance between the angles
-	if (angleDifference > 180)
+	if (angleToPlayer > angleForward - 30 && angleToPlayer < angleForward + 30)
 	{
-		angleDifference = 360 - angleDifference;
-	}
-
-	if (angleDifference <= 30)//if the difference is within 30 degrees
-	{
-		sf::Vector2f vectorToPoint = playerPosition - position;
+		sf::Vector2f vectorToPoint = t_target - position;
 		float distance = sqrt((vectorToPoint.x * vectorToPoint.x) + (vectorToPoint.y * vectorToPoint.y));
-		if (distance < 320)//ensure that the player isnt too far from the NPC
+		if (distance < 320)
 		{
 			VisionCone.setFillColor(sf::Color(0, 255, 0, 50));
 		}
