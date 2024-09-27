@@ -11,8 +11,8 @@ void Player::init()
 	playerShape.setOrigin(5, 5);
 
 	VisionCone.setPointCount(3);
-	VisionCone.setScale(3, -5);
-	VisionCone.setFillColor(sf::Color(0,0,255,50));
+	VisionCone.setScale(3.3, -5);
+	VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
 	VisionCone.setRadius(40);
 	VisionCone.setPosition(position);
 	VisionCone.setOrigin(40, 0);
@@ -122,6 +122,47 @@ void Player::keepPlayerOnScreen()
 	}
 }
 
+void Player::visionCone(sf::Vector2f t_target)
+{
+	int angleForward = normalizeAngle(playerShape.getRotation());
+
+	int angleToTarget = normalizeAngle(rotateToTarget(t_target));
+
+	int left = normalizeAngle(angleForward - 30);
+	int right = normalizeAngle(angleForward + 30);
+
+	bool angleInRange = false;
+	if (left < right && angleToTarget > left && angleToTarget < right)//if the angle is between 0 and 360
+	{
+		angleInRange = true;
+	}
+	else if (left > right && (angleToTarget > left || angleToTarget < right))//if the angle is lying between 330 and 30 just check if its between one of the angles as it must then be between both
+	{
+		angleInRange = true;
+	}
+	
+	if(angleInRange == true)
+	{
+		sf::Vector2f vectorToPoint = t_target - position;
+		float distance = sqrt((vectorToPoint.x * vectorToPoint.x) + (vectorToPoint.y * vectorToPoint.y));
+		if (distance < 320)
+		{
+			VisionCone.setFillColor(sf::Color(0, 255, 0, 50));
+		}
+		else VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
+	}
+	else VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
+}
+
+float Player::rotateToTarget(sf::Vector2f t_target)
+{
+	sf::Vector2f angleToTarget = t_target - position;
+
+	float radians = atan2(angleToTarget.y, angleToTarget.x);
+
+	return (radians * 180 / 3.14f) + 90;
+}
+
 sf::Vector2f Player::returnPlayerPos()
 {
 	return position;
@@ -139,4 +180,16 @@ sf::Vector2f Player::returnPlayerPredictedPos()
 	predictedPos.y -= cos(radians) * (velocity*30);
 
 	return predictedPos;
+}
+
+int Player::normalizeAngle(int t_angle)
+{
+	t_angle = t_angle % 360;//make sure its in the range of 360
+
+	if (t_angle < 0)//if negative make positive
+	{
+		t_angle += 360;
+	}
+
+	return t_angle;
 }

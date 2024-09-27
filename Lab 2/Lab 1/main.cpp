@@ -130,27 +130,32 @@ void main()
 			{
 				seekNPC.update(myPlayer.returnPlayerPos());
 				seekNPC.render(window);
+				myPlayer.visionCone(seekNPC.getPos());
 			}
 			if (pursueActive == true)
 			{
 				pursueNPC.update(myPlayer.returnPlayerPredictedPos());
 				pursueNPC.render(window);
 				pursueNPC.setRealPlayerPos(myPlayer.returnPlayerPos());
+				myPlayer.visionCone(pursueNPC.getPos());
 			}
 			if (wanderActive == true)
 			{
 				wanderNPC.update(myPlayer.returnPlayerPos());
 				wanderNPC.render(window);
+				myPlayer.visionCone(wanderNPC.getPos());
 			}
 			if (arriveActive == true)
 			{
 				arriveNPC.update(myPlayer.returnPlayerPos());
 				arriveNPC.render(window);
+				myPlayer.visionCone(arriveNPC.getPos());
 			}
 			if (arriveSlowActive == true)
 			{
 				arriveSlowNPC.update(myPlayer.returnPlayerPos());
 				arriveSlowNPC.render(window);
+				myPlayer.visionCone(arriveSlowNPC.getPos());
 			}
 
 			window.draw(prompt);

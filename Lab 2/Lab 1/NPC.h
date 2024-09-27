@@ -14,8 +14,10 @@ public:
 	float rotateToTarget(sf::Vector2f t_target);
 	void visionConeView(sf::Vector2f t_target);
 	void setRealPlayerPos(sf::Vector2f t_realPos);
-
+	sf::Vector2f getPos();
 private:
+	int normalizeAngle(int t_angle);
+
 	sf::Vector2f position = { 0,0 };
 	sf::Vector2f playerPosition = { 0,0 };
 	sf::Vector2f newPosition = { 0,0 };

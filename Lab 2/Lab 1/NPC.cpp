@@ -87,7 +87,7 @@ void NPC::update(sf::Vector2f t_playerPos)
 
 	velocity *= friction;
 
-	//position += velocity;
+	position += velocity;
 
 	keepNPCOnScreen();
 
@@ -157,11 +157,24 @@ float NPC::rotateToTarget(sf::Vector2f t_target)
 
 void NPC::visionConeView(sf::Vector2f t_target)
 {
-	float angleForward = NPCShape.getRotation();
+	int angleForward = normalizeAngle(NPCShape.getRotation());
 
-	float angleToPlayer = rotateToTarget(t_target);
+	int angleToTarget = normalizeAngle(rotateToTarget(t_target));
 
-	if (angleToPlayer > angleForward - 30 && angleToPlayer < angleForward + 30)
+	int left = normalizeAngle(angleForward - 30);
+	int right = normalizeAngle(angleForward + 30);
+
+	bool angleInRange = false;
+	if (left < right && angleToTarget > left && angleToTarget < right)//if the angle is between 0 and 360
+	{
+		angleInRange = true;
+	}
+	else if (left > right && (angleToTarget > left || angleToTarget < right))//if the angle is lying between 330 and 30 just check if its between one of the angles as it must then be between both
+	{
+		angleInRange = true;
+	}
+
+	if (angleInRange == true)
 	{
 		sf::Vector2f vectorToPoint = t_target - position;
 		float distance = sqrt((vectorToPoint.x * vectorToPoint.x) + (vectorToPoint.y * vectorToPoint.y));
@@ -169,12 +182,29 @@ void NPC::visionConeView(sf::Vector2f t_target)
 		{
 			VisionCone.setFillColor(sf::Color(0, 255, 0, 50));
 		}
-		else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
+		else VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
 	}
-	else VisionCone.setFillColor(sf::Color(255, 0, 0, 50));
+	else VisionCone.setFillColor(sf::Color(0, 0, 255, 50));
 }
 
 void NPC::setRealPlayerPos(sf::Vector2f t_realPos)
 {
 	pursuitRealPlayerPos = t_realPos;//to ensure the pursuit enemy looks for player in vision cone not the predicted player
+}
+
+sf::Vector2f NPC::getPos()
+{
+	return position;
+}
+
+int NPC::normalizeAngle(int t_angle)
+{
+	t_angle = t_angle % 360;//make sure its in the range of 360
+
+	if (t_angle < 0)//if negative make positive
+	{
+		t_angle += 360;
+	}
+
+	return t_angle;
 }
