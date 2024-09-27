@@ -6,11 +6,6 @@ sf::Vector2f Behaviour::vectorToTarget(const sf::Vector2f t_thisPos, const sf::V
 	float distance = sqrt((vectorToPoint.x * vectorToPoint.x) + (vectorToPoint.y * vectorToPoint.y));//get distance between 2 points
 	vectorToPoint = sf::Vector2f{ vectorToPoint.x / (distance*1.3f),vectorToPoint.y / (distance * 1.3f) };//normalise vector
 
-	if (distance <= 50)
-	{
-		vectorToPoint = sf::Vector2f{ 0,0 };
-	}
-
 	return vectorToPoint;
 }
 
