@@ -244,26 +244,26 @@ float Boid::angle(Pvector& v)
 
 void Boid::swarm(vector <Boid>& v)
 {
-/*		Lenard-Jones Potential function
-			Vector R = me.position - you.position
-			Real D = R.magnitude()
-			Real U = -A / pow(D, N) + B / pow(D, M)
-			R.normalise()
-			force = force + R*U
+	/*		Lenard-Jones Potential function
+				Vector R = me.position - you.position
+				Real D = R.magnitude()
+				Real U = -A / pow(D, N) + B / pow(D, M)
+				R.normalise()
+				force = force + R*U
 
 
-			U = potential energy of attraction
-			-A/r^n force of attraction
-			B/r^m force of repulsion
-			r = distance between 2 objects
-*/
+				U = potential energy of attraction
+				-A/r^n force of attraction
+				B/r^m force of repulsion
+				r = distance between 2 objects
+	*/
 	Pvector	R;
 	Pvector sum(0, 0);
 
-	float A = 10.0f;//strength of attraction
-	float B = 5.0f;//strength of repulsion
+	float A = 50.0f;//strength of attraction
+	float B = 10.0f;//strength of repulsion
 
-	float N = 12.0f;//attenuation of attraction
+	float N = 20.0f;//attenuation of attraction
 	float M = 6.0f;//attenuation of repulsion
 
 	for (int i = 0; i < v.size(); i++)
@@ -276,7 +276,7 @@ void Boid::swarm(vector <Boid>& v)
 
 			R.normalize();
 
-			float U = -A / pow(D, N) + B / pow(D, M);			
+			float U = -A / pow(D, N) + B / pow(D, M);
 
 			sum.x = sum.x + R.x * U;
 			sum.y = sum.y + R.y * U;
@@ -284,15 +284,15 @@ void Boid::swarm(vector <Boid>& v)
 	}
 
 	Pvector swarmTarget;
-	swarmTarget.x = 500 - location.x;
-	swarmTarget.y = 500 - location.y;
+	swarmTarget.x = (w_width / 2) - location.x;
+	swarmTarget.y = (w_height / 2) - location.y;
 
-	float swarmTargetDistance = location.distance(swarmTarget);
+	float targetDistance = location.distance(swarmTarget);
 
 	swarmTarget.normalize();
 
-	swarmTarget.x *= A / swarmTargetDistance;
-	swarmTarget.y *= A / swarmTargetDistance;
+	swarmTarget.x *= 50 / targetDistance;
+	swarmTarget.y *= 50 / targetDistance;
 
 	sum.x += swarmTarget.x;//add force towards the swarms target
 	sum.y += swarmTarget.y;
