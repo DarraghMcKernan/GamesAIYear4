@@ -250,11 +250,72 @@ void Boid::swarm(vector <Boid>& v)
 			Real U = -A / pow(D, N) + B / pow(D, M)
 			R.normalise()
 			force = force + R*U
+
+
+			U = potential energy of attraction
+			-A/r^n force of attraction
+			B/r^m force of repulsion
+			r = distance between 2 objects
 */
 	Pvector	R;
 	Pvector sum(0, 0);
 
-// Your code here..
+	float A = 10.0f;//strength of attraction
+	float B = 5.0f;//strength of repulsion
+
+	float N = 12.0f;//attenuation of attraction
+	float M = 6.0f;//attenuation of repulsion
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		float D = location.distance(v[i].location);
+		if ((D > 0.1f) && (D < neighbourDistance))
+		{
+			R.x = location.x - v[i].location.x;// me.pos - you.pos
+			R.y = location.y - v[i].location.y;
+
+			R.normalize();
+
+			float U = -A / pow(D, N) + B / pow(D, M);			
+
+			sum.x = sum.x + R.x * U;
+			sum.y = sum.y + R.y * U;
+		}
+	}
+
+	Pvector swarmTarget;
+	swarmTarget.x = 500 - location.x;
+	swarmTarget.y = 500 - location.y;
+
+	float swarmTargetDistance = location.distance(swarmTarget);
+
+	swarmTarget.normalize();
+
+	swarmTarget.x *= A / swarmTargetDistance;
+	swarmTarget.y *= A / swarmTargetDistance;
+
+	sum.x += swarmTarget.x;//add force towards the swarms target
+	sum.y += swarmTarget.y;
+
+	sum.limit(maxForce);
+
+	//Pvector temp;//temporary target
+	//temp.x = 200;
+	//temp.y = 200;
+
+	//R.x = location.x - temp.x;// me.pos - you.pos
+	//R.y = location.y - temp.y;
+
+	//float D = location.distance(temp);
+
+	////float D = R.magnitude();
+	//float U = -A / pow(D, N) + B / pow(D, M);
+
+	//R.normalize();
+
+	//sum.x = sum.x + R.x * U;
+	//sum.y = sum.y + R.y * U;
+	//
 
 	applyForce(sum);
 	update();
