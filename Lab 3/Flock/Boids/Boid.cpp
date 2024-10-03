@@ -257,19 +257,23 @@ void Boid::swarm(vector <Boid>& v)
 				B/r^m force of repulsion
 				r = distance between 2 objects
 	*/
+	Pvector sep = Separation(v);
+	Pvector ali = Alignment(v);
+	Pvector coh = Cohesion(v);
+
 	Pvector	R;
 	Pvector sum(0, 0);
 
-	float A = 50.0f;//strength of attraction
+	float A = 100.0f;//strength of attraction
 	float B = 10.0f;//strength of repulsion
 
-	float N = 20.0f;//attenuation of attraction
+	float N = 20.f;//attenuation of attraction
 	float M = 6.0f;//attenuation of repulsion
 
 	for (int i = 0; i < v.size(); i++)
 	{
 		float D = location.distance(v[i].location);
-		if ((D > 0.1f) && (D < neighbourDistance))
+		if ((D > 0.1f) && (D < 500))
 		{
 			R.x = location.x - v[i].location.x;// me.pos - you.pos
 			R.y = location.y - v[i].location.y;
@@ -283,40 +287,16 @@ void Boid::swarm(vector <Boid>& v)
 		}
 	}
 
-	Pvector swarmTarget;
-	swarmTarget.x = (w_width / 2) - location.x;
-	swarmTarget.y = (w_height / 2) - location.y;
+	// Arbitrarily weight these forces
+	sep.mulScalar(0.5);
+	ali.mulScalar(0.5); // Might need to alter weights for different characteristics
+	coh.mulScalar(0.5);
+	sum.mulScalar(5.0);
+	// Add the force vectors to acceleration
 
-	float targetDistance = location.distance(swarmTarget);
-
-	swarmTarget.normalize();
-
-	swarmTarget.x *= 50 / targetDistance;
-	swarmTarget.y *= 50 / targetDistance;
-
-	sum.x += swarmTarget.x;//add force towards the swarms target
-	sum.y += swarmTarget.y;
-
-	sum.limit(maxForce);
-
-	//Pvector temp;//temporary target
-	//temp.x = 200;
-	//temp.y = 200;
-
-	//R.x = location.x - temp.x;// me.pos - you.pos
-	//R.y = location.y - temp.y;
-
-	//float D = location.distance(temp);
-
-	////float D = R.magnitude();
-	//float U = -A / pow(D, N) + B / pow(D, M);
-
-	//R.normalize();
-
-	//sum.x = sum.x + R.x * U;
-	//sum.y = sum.y + R.y * U;
-	//
-
+	//applyForce(sep);
+	//applyForce(ali);
+	//applyForce(coh);
 	applyForce(sum);
 	update();
 	borders();
