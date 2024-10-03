@@ -257,26 +257,26 @@ void Boid::swarm(vector <Boid>& v)
 				B/r^m force of repulsion
 				r = distance between 2 objects
 	*/
-	Pvector sep = Separation(v);
-	Pvector ali = Alignment(v);
-	Pvector coh = Cohesion(v);
 
 	Pvector	R;
 	Pvector sum(0, 0);
 
-	float A = 100.0f;//strength of attraction
-	float B = 10.0f;//strength of repulsion
+	float A = 35.0f;//strength of attraction
+	float B = 100.0f;//strength of repulsion
 
-	float N = 20.f;//attenuation of attraction
-	float M = 6.0f;//attenuation of repulsion
+	float N = 1.25f;//attenuation of attraction
+	float M = 1.5f;//attenuation of repulsion
+
+	float D = 0.0f;//magnitude of R
 
 	for (int i = 0; i < v.size(); i++)
 	{
-		float D = location.distance(v[i].location);
-		if ((D > 0.1f) && (D < 500))
+		if(&v[i] != this)
 		{
 			R.x = location.x - v[i].location.x;// me.pos - you.pos
 			R.y = location.y - v[i].location.y;
+
+			D = R.magnitude();
 
 			R.normalize();
 
@@ -287,16 +287,8 @@ void Boid::swarm(vector <Boid>& v)
 		}
 	}
 
-	// Arbitrarily weight these forces
-	sep.mulScalar(0.5);
-	ali.mulScalar(0.5); // Might need to alter weights for different characteristics
-	coh.mulScalar(0.5);
-	sum.mulScalar(5.0);
-	// Add the force vectors to acceleration
+	sum.mulScalar(1.0);
 
-	//applyForce(sep);
-	//applyForce(ali);
-	//applyForce(coh);
 	applyForce(sum);
 	update();
 	borders();
