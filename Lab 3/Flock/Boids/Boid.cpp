@@ -271,7 +271,7 @@ void Boid::swarm(vector <Boid>& v)
 
 	for (int i = 0; i < v.size(); i++)
 	{
-		if(&v[i] != this)
+		if(&v[i] != this && predator != true && v[i].predator != true)//if not itself and not a predator
 		{
 			R.x = location.x - v[i].location.x;// me.pos - you.pos
 			R.y = location.y - v[i].location.y;
