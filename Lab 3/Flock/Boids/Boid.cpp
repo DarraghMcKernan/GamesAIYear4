@@ -187,7 +187,7 @@ Pvector Boid::seek(Pvector& v)
 void Boid::update()
 {
 	//To make the slow down not as abrupt
-	acceleration.mulScalar(.1);
+	acceleration.mulScalar(.4); // .4
 	// Update velocity
 	velocity.addVector(acceleration);
 	// Limit speed
@@ -261,17 +261,19 @@ void Boid::swarm(vector <Boid>& v)
 	Pvector	R;
 	Pvector sum(0, 0);
 
-	float A = 35.0f;//strength of attraction
-	float B = 100.0f;//strength of repulsion
+	float A = 100.0f;//strength of attraction  100
+	float B = 8000.0f;//strength of repulsion  7000
 
-	float N = 1.25f;//attenuation of attraction
-	float M = 1.5f;//attenuation of repulsion
+	float N = 1.04f;//attenuation of attraction  1
+	float M = 1.95f;//attenuation of repulsion   2
 
 	float D = 0.0f;//magnitude of R
 
+	int boidCounter = 0;
+
 	for (int i = 0; i < v.size(); i++)
 	{
-		if(&v[i] != this && predator != true && v[i].predator != true)//if not itself and not a predator
+		if (&v[i] != this && predator != true && v[i].predator != true)//if not itself and not a predator
 		{
 			R.x = location.x - v[i].location.x;// me.pos - you.pos
 			R.y = location.y - v[i].location.y;
@@ -284,12 +286,44 @@ void Boid::swarm(vector <Boid>& v)
 
 			sum.x = sum.x + R.x * U;
 			sum.y = sum.y + R.y * U;
+
+			boidCounter++;
 		}
 	}
 
-	sum.mulScalar(1.0);
-
+	if (boidCounter > 0)
+	{	
+		sum.divScalar(boidCounter);
+	}
 	applyForce(sum);
+
+	//causes the swarm to move towards the mouse position on right click
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		sum.x = 0;
+		sum.y = 0;
+
+		float xMouse = sf::Mouse::getPosition().x;
+		float yMouse = sf::Mouse::getPosition().y;
+
+		R.x = location.x - xMouse;
+		R.y = location.y - yMouse;
+
+		D = R.magnitude();
+
+		R.normalize();
+
+		float U = -A / pow(D, N) + B / pow(D, M);
+
+		sum.x = sum.x + R.x * U;
+		sum.y = sum.y + R.y * U;
+
+		sum.mulScalar(1);
+
+		applyForce(sum);
+	}
+
+
 	update();
 	borders();
 }
