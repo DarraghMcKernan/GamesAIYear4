@@ -7,10 +7,12 @@ public:
 	void init();
 	void setLeaderPos(sf::Vector2f t_leaderPos);
 	void render(sf::RenderWindow& t_window);
-	sf::Vector2f getFormationPoint(int t_position, float t_rotation);
+	sf::Vector2f getFormationPoint(int t_position, float t_rotation,sf::Vector2f t_fighterPos,bool t_altMode);
 
 private:
 	sf::Vector2f rotateWithFormation(sf::Vector2f t_position, float t_angle);
+
+	float distanceBetween(sf::Vector2f t_point1, sf::Vector2f t_point2);
 
 	sf::Vector2f FormationLeaderPos;
 	std::vector<sf::Vector2f> formationPositions;

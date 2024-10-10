@@ -32,29 +32,57 @@ void Formation::render(sf::RenderWindow& t_window)
 	t_window.draw(formationCircle);
 }
 
-sf::Vector2f Formation::getFormationPoint(int t_position, float t_rotation)
+sf::Vector2f Formation::getFormationPoint(int t_position, float t_rotation, sf::Vector2f t_fighterPos, bool t_altMode)
 {
-	float radians = t_rotation * (3.14 / 180);
+	float radians = t_rotation * (3.14159f / 180.0f);
+
+	sf::Vector2f offset;
 
 	if (t_position == 0)
 	{
-		formationPositions[0] = rotateWithFormation(sf::Vector2f(-formationXOffset/2, formationYOffset), radians);
+		//tempPos = rotateWithFormation(sf::Vector2f(-formationXOffset/2, formationYOffset), radians);
+		offset = sf::Vector2f(-formationXOffset / 2, formationYOffset);
 	}
 	else if (t_position == 1)
 	{
-		formationPositions[1] = rotateWithFormation(sf::Vector2f(-formationXOffset*1.5, formationYOffset*2), radians);
+		//tempPos = rotateWithFormation(sf::Vector2f(-formationXOffset*1.5, formationYOffset*2), radians);
+		offset = sf::Vector2f(- formationXOffset * 1.5, formationYOffset * 2);
 	}
 	else if (t_position == 2)
 	{
-		formationPositions[2] = rotateWithFormation(sf::Vector2f(formationXOffset/2, formationYOffset * 2), radians);
+		//tempPos = rotateWithFormation(sf::Vector2f(formationXOffset/2, formationYOffset * 2), radians);
+		offset = sf::Vector2f(formationXOffset / 2, formationYOffset * 2);
 	}
 	else if (t_position == 3)
 	{
-		formationPositions[3] = rotateWithFormation(sf::Vector2f(formationXOffset * 1.5, formationYOffset * 3), radians);
+		//tempPos = rotateWithFormation(sf::Vector2f(formationXOffset * 1.5, formationYOffset * 3), radians);
+		offset = sf::Vector2f(formationXOffset * 1.5, formationYOffset * 3);
 	}
+	//tempPos = rotateWithFormation(offset, radians);
 
-	formationPositions[t_position] += FormationLeaderPos;
-	return formationPositions[t_position];
+	sf::Vector2f actualFormationPoint = rotateWithFormation(offset, radians);
+	actualFormationPoint += FormationLeaderPos;
+
+
+	if (t_altMode == true)
+	{
+		float distance = distanceBetween(actualFormationPoint, t_fighterPos);
+		distance /= 100;
+
+		sf::Vector2f backwardsOffset(offset.x, offset.y * distance);
+		if (backwardsOffset.y < offset.y)
+		{
+			backwardsOffset.y = offset.y;
+		}
+
+		backwardsOffset = rotateWithFormation(backwardsOffset, radians);
+		backwardsOffset += FormationLeaderPos;
+
+		formationPositions[t_position] = backwardsOffset;
+		return formationPositions[t_position];
+	}
+	formationPositions[t_position] = actualFormationPoint;
+	return actualFormationPoint;
 }
 
 sf::Vector2f Formation::rotateWithFormation(sf::Vector2f t_position, float t_angle)
@@ -67,4 +95,11 @@ sf::Vector2f Formation::rotateWithFormation(sf::Vector2f t_position, float t_ang
 	tempPos = sf::Vector2f(tempPos.x * cosTheta - tempPos.y * sinTheta, tempPos.x * sinTheta + tempPos.y * cosTheta);
 	
 	return tempPos;
+}
+
+float Formation::distanceBetween(sf::Vector2f t_point1, sf::Vector2f t_point2)
+{
+	sf::Vector2f distance = sf::Vector2f(t_point1.x - t_point2.x, t_point1.y - t_point2.y);
+
+	return std::sqrt(distance.x * distance.x + distance.y * distance.y);
 }

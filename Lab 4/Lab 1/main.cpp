@@ -53,13 +53,16 @@ void main()
 	}
 	prompt.setFont(font);
 	prompt.setCharacterSize(30);
-	prompt.setString("Toggle enemies using 1-5");
+	prompt.setString("A to toggle enemies, D to toggle formation points, SPACE for alt mode");
 
 	bool seekActive = false;
 	bool pursueActive = false;
 	bool wanderActive = false;
 	bool arriveActive = false;
 	bool arriveSlowActive = false;
+
+	bool formationPointsVisible = true;
+	bool altMode = false;
 
 	int buttonPressCooldown = 0;
 
@@ -86,7 +89,7 @@ void main()
 			{
 				buttonPressCooldown--;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && buttonPressCooldown == 0)
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && buttonPressCooldown == 0)
 			{
 				if (arriveSlowActive == true)
 				{
@@ -95,23 +98,45 @@ void main()
 				else arriveSlowActive = true;
 				buttonPressCooldown = 10;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && buttonPressCooldown == 0)
+			{
+				if (formationPointsVisible == true)
+				{
+					formationPointsVisible = false;
+				}
+				else formationPointsVisible = true;
+				buttonPressCooldown = 10;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && buttonPressCooldown == 0)
+			{
+				if (altMode == true)
+				{
+					altMode = false;
+				}
+				else altMode = true;
+				buttonPressCooldown = 10;
+			}
 
 			window.clear(sf::Color::Black);
 			myPlayer.render(window);
-			myFormation.render(window);
+			
+			if (formationPointsVisible == true)
+			{
+				myFormation.render(window);
+			}
 
 			if (arriveSlowActive == true)
 			{
-				fighterOne.update(myFormation.getFormationPoint(0, myPlayer.rotation));
+				fighterOne.update(myFormation.getFormationPoint(0, myPlayer.rotation,fighterOne.getPos(), altMode));
 				fighterOne.render(window);
 
-				fighterTwo.update(myFormation.getFormationPoint(1, myPlayer.rotation));
+				fighterTwo.update(myFormation.getFormationPoint(1, myPlayer.rotation, fighterTwo.getPos(), altMode));
 				fighterTwo.render(window);
 
-				fighterThree.update(myFormation.getFormationPoint(2, myPlayer.rotation));
+				fighterThree.update(myFormation.getFormationPoint(2, myPlayer.rotation, fighterThree.getPos(), altMode));
 				fighterThree.render(window);
 
-				fighterFour.update(myFormation.getFormationPoint(3, myPlayer.rotation));
+				fighterFour.update(myFormation.getFormationPoint(3, myPlayer.rotation, fighterFour.getPos(), altMode));
 				fighterFour.render(window);
 			}
 
