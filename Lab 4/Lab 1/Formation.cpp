@@ -5,6 +5,7 @@ void Formation::init()
 	formationCircle.setRadius(10);
 	formationCircle.setFillColor(sf::Color(0, 255, 0, 100));
 	formationCircle.setPosition(sf::Vector2f(-100, -100));
+	formationCircle.setOrigin(10, 10);
 
 	for (int i = 0; i < 4; i++)
 	{

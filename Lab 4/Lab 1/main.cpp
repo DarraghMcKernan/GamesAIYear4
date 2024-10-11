@@ -37,10 +37,10 @@ void main()
 	//NPC arriveNPC(sf::Vector2f{ 800, 700 },2.0f,BehaviourEnum::Arrive);
 	//NPC arriveSlowNPC(sf::Vector2f{ 1000, 400 },2.0f,BehaviourEnum::ArriveSlow);
 
-	NPC fighterOne(sf::Vector2f{ 50, 100 }, 2.0f, BehaviourEnum::ArriveSlow);
-	NPC fighterTwo(sf::Vector2f{ 100, 100 }, 2.0f, BehaviourEnum::ArriveSlow);
-	NPC fighterThree(sf::Vector2f{ 150, 100 }, 2.0f, BehaviourEnum::ArriveSlow);
-	NPC fighterFour(sf::Vector2f{ 200, 100 }, 2.0f, BehaviourEnum::ArriveSlow);
+	NPC fighterOne(sf::Vector2f{ 50, 100 }, 1.5f, BehaviourEnum::ArriveSlow);
+	NPC fighterTwo(sf::Vector2f{ 100, 100 }, 1.5f, BehaviourEnum::ArriveSlow);
+	NPC fighterThree(sf::Vector2f{ 150, 100 }, 1.5f, BehaviourEnum::ArriveSlow);
+	NPC fighterFour(sf::Vector2f{ 200, 100 }, 1.5f, BehaviourEnum::ArriveSlow);
 
 	Formation myFormation;
 
@@ -53,7 +53,7 @@ void main()
 	}
 	prompt.setFont(font);
 	prompt.setCharacterSize(30);
-	prompt.setString("A to toggle enemies, D to toggle formation points, SPACE for alt mode");
+	prompt.setString("A to toggle enemies, D to toggle formation points, SPACE for normal formation");
 
 	bool seekActive = false;
 	bool pursueActive = false;
@@ -62,7 +62,7 @@ void main()
 	bool arriveSlowActive = false;
 
 	bool formationPointsVisible = true;
-	bool altMode = false;
+	bool altMode = true;
 
 	int buttonPressCooldown = 0;
 
@@ -122,7 +122,7 @@ void main()
 			
 			if (formationPointsVisible == true)
 			{
-				myFormation.render(window);
+				myFormation.render(window);			
 			}
 
 			if (arriveSlowActive == true)
