@@ -2,11 +2,15 @@
 
 void Grid::init()
 {
+	if (!font.loadFromFile("ASSETS/BebasNeue.otf"))
+	{
+		std::cout << "\nfont failed to load";
+	}
 	Cell newCell;
 	for (int index = 0; index < 50*50; index++)
 	{
 		cells.push_back(newCell);
-		cells[index].init(index, 0, { (index % 50) * CELL_SIZE,(index / 50) * CELL_SIZE });
+		cells[index].init(index, 0, { (index % 50) * CELL_SIZE,(index / 50) * CELL_SIZE },font);
 	}
 }
 
@@ -33,6 +37,25 @@ void Grid::update()
 		setCells(goalCellIndex, 2);
 		clickCooldown = 30;
 	}
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) != true))
+	{
+		wallCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
+		std::cout << wallCellIndex << "\n";
+		if (cells[wallCellIndex].getType() == 0)
+		{
+			setCells(wallCellIndex, 3);
+		}
+	}
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+	{
+		wallCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
+		std::cout << wallCellIndex << "\n";
+		if (cells[wallCellIndex].getType() == 3)
+		{
+			setCells(wallCellIndex, 0);
+		}
+	}
+
 }
 
 void Grid::setCells(int t_cellNum, int t_type)

@@ -13,9 +13,11 @@ private:
 	int currentCellNum = 0;
 	std::vector<Cell> cells;
 	sf::Vector2i mousePos;
+	sf::Font font;
 
 	int startCellIndex = 0;
 	int goalCellIndex = 0;
+	int wallCellIndex = 0;
 
 	int clickCooldown = 0;
 };
