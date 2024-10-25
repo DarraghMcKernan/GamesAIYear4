@@ -90,14 +90,13 @@ void Grid::assignCellCosts()
 {
 	int targetX = goalCellIndex % 50;
 	int targetY = goalCellIndex / 50;
-	//std::cout << "Target X: " + std::to_string(targetX*50) + "   Target Y: " + std::to_string(targetY*20) + "\n";
 
 	for (int row = 0; row < 50; row++)
 	{
 		for (int column = 0; column < 50; column++)
 		{
 			int index = (row * 50) + column;
-			float distance = std::sqrt(std::pow(targetX - column, 2) + std::pow(targetY - row, 2));
+			float distance = std::sqrt((targetX - column) * (targetX - column) + (targetY - row)*(targetY - row));
 
 			if (cells[index].getCost() != 999 && index != goalCellIndex && index != startCellIndex)
 			{
