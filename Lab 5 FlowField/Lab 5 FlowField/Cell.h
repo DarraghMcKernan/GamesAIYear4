@@ -8,6 +8,7 @@ public:
 	void setType(int t_cellType);
 	int getType();
 	void setCost(int t_cost);
+	int getCost();
 	void setVectors(int t_vectors);
 	void render(sf::RenderWindow& t_window);
 private:

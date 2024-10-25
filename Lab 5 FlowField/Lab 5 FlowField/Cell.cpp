@@ -6,7 +6,7 @@ void Cell::init(int t_cellNum, int t_cellType, sf::Vector2f t_position, sf::Font
 	typeOfCell = t_cellType;
 
 	cellShape.setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-	cellShape.setFillColor(sf::Color(50, 50, 200));
+	cellShape.setFillColor(sf::Color(50, 50, 50));
 	cellShape.setOutlineColor(sf::Color::Black);
 	cellShape.setOutlineThickness(2.0f);
 	cellShape.setPosition(t_position);
@@ -21,7 +21,7 @@ void Cell::setType(int t_cellType)
 	typeOfCell = t_cellType;
 	if (typeOfCell == 0)//default cell
 	{
-		cellShape.setFillColor(sf::Color(50, 50, 200));
+		cellShape.setFillColor(sf::Color(50, 50, 50));
 		setCost(0);
 	}
 	else if (typeOfCell == 1)//start
@@ -51,6 +51,21 @@ void Cell::setCost(int t_cost)
 {
 	cost = t_cost;
 	weightText.setString(std::to_string(cost));
+	if (cost != 0)
+	{
+		int colour = cost * 4;
+		if (colour > 255)
+		{
+			colour = 255;
+		}
+		cellShape.setFillColor(sf::Color(colour, colour, colour));
+	}
+	else cellShape.setFillColor(sf::Color::Red);
+}
+
+int Cell::getCost()
+{
+	return cost;
 }
 
 void Cell::setVectors(int t_vectors)
