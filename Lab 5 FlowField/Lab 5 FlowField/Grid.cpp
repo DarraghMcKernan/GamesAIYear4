@@ -104,4 +104,19 @@ void Grid::assignCellCosts()
 			}
 		}
 	}
+	generateIntegrationField();
+}
+
+void Grid::generateIntegrationField()
+{
+	//point towards the cheapest nearby cell
+	for (int row = 0; row < 50; row++)
+	{
+		for (int column = 0; column < 50; column++)
+		{
+			int index = (row * 50) + column;
+
+			cells[index].setCheapestNeighbour(255);
+		}
+	}
 }

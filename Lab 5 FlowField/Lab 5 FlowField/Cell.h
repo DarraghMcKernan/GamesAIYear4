@@ -9,14 +9,15 @@ public:
 	int getType();
 	void setCost(int t_cost);
 	int getCost();
-	void setVectors(int t_vectors);
+	void setCheapestNeighbour(int t_cheapest);
 	void render(sf::RenderWindow& t_window);
 private:
 	int cellNumber = 0;
 	int cost = 0;
-	int vectors = 0;
+	int cheapesNeighbour = 0;
 	int typeOfCell = 0;
 	sf::RectangleShape cellShape;
+	sf::RectangleShape arrowShape;
 	sf::Font font;
 	sf::Text weightText;
 	bool renderCost = true;

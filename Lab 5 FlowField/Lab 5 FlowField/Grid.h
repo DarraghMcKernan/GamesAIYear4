@@ -9,6 +9,7 @@ public:
 	void setCells(int t_cellNum, int t_type);
 	void render(sf::RenderWindow& t_window);
 	void assignCellCosts();
+	void generateIntegrationField();
 
 private:
 	int currentCellNum = 0;
