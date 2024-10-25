@@ -22,6 +22,7 @@ void Cell::setType(int t_cellType)
 	if (typeOfCell == 0)//default cell
 	{
 		cellShape.setFillColor(sf::Color(50, 50, 200));
+		setCost(0);
 	}
 	else if (typeOfCell == 1)//start
 	{
@@ -49,6 +50,7 @@ int Cell::getType()
 void Cell::setCost(int t_cost)
 {
 	cost = t_cost;
+	weightText.setString(std::to_string(cost));
 }
 
 void Cell::setVectors(int t_vectors)

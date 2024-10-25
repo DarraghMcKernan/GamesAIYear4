@@ -8,6 +8,7 @@ public:
 	void update();
 	void setCells(int t_cellNum, int t_type);
 	void render(sf::RenderWindow& t_window);
+	void assignCellCosts();
 
 private:
 	int currentCellNum = 0;
@@ -20,4 +21,7 @@ private:
 	int wallCellIndex = 0;
 
 	int clickCooldown = 0;
+
+	bool goalSet = false;
+	bool startSet = false;
 };

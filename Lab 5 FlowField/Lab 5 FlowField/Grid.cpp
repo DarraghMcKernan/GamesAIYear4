@@ -21,23 +21,25 @@ void Grid::update()
 		clickCooldown--;
 	}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown <= 0)
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown <= 0)//set start
 	{
+		startSet = true;
 		setCells(startCellIndex, 0);
 		startCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		std::cout << startCellIndex << "\n";
 		setCells(startCellIndex, 1);
 		clickCooldown = 30;
 	}
-	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clickCooldown <= 0)
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clickCooldown <= 0)//set goal
 	{
+		goalSet = true;
 		setCells(goalCellIndex, 0);
 		goalCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		std::cout << goalCellIndex << "\n";
 		setCells(goalCellIndex, 2);
 		clickCooldown = 30;
 	}
-	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) != true))
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) != true))//create wall
 	{
 		wallCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		std::cout << wallCellIndex << "\n";
@@ -46,7 +48,7 @@ void Grid::update()
 			setCells(wallCellIndex, 3);
 		}
 	}
-	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))//remove wall
 	{
 		wallCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		std::cout << wallCellIndex << "\n";
@@ -55,7 +57,13 @@ void Grid::update()
 			setCells(wallCellIndex, 0);
 		}
 	}
+	if (goalSet == true && startSet == true)
+	{
+		goalSet = false;
+		startSet = false;
 
+		assignCellCosts();
+	}
 }
 
 void Grid::setCells(int t_cellNum, int t_type)
@@ -70,5 +78,28 @@ void Grid::render(sf::RenderWindow& t_window)
 	for (int index = 0; index < 50*50; index++)
 	{
 		cells[index].render(t_window);
+	}
+}
+
+void Grid::assignCellCosts()
+{
+	//cells[goalCellIndex].setCost(0);
+	for (int index = 0; index < 50*50; index++)
+	{
+		int topCell = goalCellIndex - 50;
+		int bottomCell = goalCellIndex + 50;
+		int leftCell = goalCellIndex - 1;
+		int rightCell = goalCellIndex + 1;
+
+		cells[topCell].setCost(1);
+		cells[topCell-1].setCost(1);
+		cells[topCell+1].setCost(1);
+
+		cells[bottomCell].setCost(1);
+		cells[bottomCell-1].setCost(1);
+		cells[bottomCell+1].setCost(1);
+
+		cells[leftCell].setCost(1);
+		cells[rightCell].setCost(1);
 	}
 }
