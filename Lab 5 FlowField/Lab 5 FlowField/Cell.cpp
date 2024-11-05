@@ -13,7 +13,7 @@ void Cell::init(int t_cellNum, int t_cellType, sf::Vector2f t_position, sf::Font
 
 	arrowShape.setSize(sf::Vector2f(15, 2));
 	arrowShape.setFillColor(sf::Color(250, 250, 250));
-	arrowShape.setOrigin({2,2});
+	arrowShape.setOrigin({2,1});
 	arrowShape.setPosition({ t_position .x+CELL_SIZE/2,t_position .y+CELL_SIZE/2});
 
 	weightText.setFont(t_font);

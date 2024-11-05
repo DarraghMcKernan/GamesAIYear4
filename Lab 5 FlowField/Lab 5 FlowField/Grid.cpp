@@ -116,7 +116,29 @@ void Grid::generateIntegrationField()
 		{
 			int index = (row * 50) + column;
 
-			cells[index].setCheapestNeighbour(255);
+			int cheapestCell = index;
+			int cheapestCost = cells[index].getCost();
+
+			for (int c = index - 50; c <= index + 50; c += 50)
+			{
+				if (c > 0 && c < 50 * 50)
+				{
+					for (int r = c - 1; r <= c + 1; r++)
+					{
+						if (r > 0 && r < 50 * 50)
+						{
+							if (cells[r].getCost() < cheapestCost)
+							{
+								cheapestCell = r;
+								cheapestCost = cells[r].getCost();
+							}
+						}
+					}
+				}
+			}
+			
+
+			cells[index].setCheapestNeighbour(cheapestCell);
 		}
 	}
 }
