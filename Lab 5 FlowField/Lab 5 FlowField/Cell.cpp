@@ -33,7 +33,7 @@ void Cell::setType(int t_cellType)
 	{
 		cellShape.setFillColor(sf::Color::Green);
 	}
-	else if (typeOfCell == 2)//end
+	else if (typeOfCell == 2)//goal
 	{
 		cellShape.setFillColor(sf::Color::Red);
 		setCost(0);
@@ -56,9 +56,14 @@ void Cell::setCost(int t_cost)
 {
 	cost = t_cost;
 	weightText.setString(std::to_string(cost));
-	if (cost != 0)
+
+	if (cost == 9999)
 	{
-		int colour = cost * 4;
+		cellShape.setFillColor(sf::Color::Black);
+	}
+	else if (cost != 0)
+	{
+		int colour = cost/4;
 		if (colour > 255)
 		{
 			colour = 255;
@@ -77,7 +82,7 @@ void Cell::setCheapestNeighbour(int t_cheapest)
 {
 	cheapesNeighbour = t_cheapest;
 	//startCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
-	sf::Vector2f cheapestPos = { (t_cheapest % 50) * 20.0f,(t_cheapest / 50.0f) * 20.0f };
+	sf::Vector2f cheapestPos = { (t_cheapest % 50) * 20.0f,(t_cheapest / 50) * 20.0f };
 
 	sf::Vector2f direction = cheapestPos - cellShape.getPosition();
 	float angle = std::atan2(direction.y, direction.x);
@@ -86,9 +91,15 @@ void Cell::setCheapestNeighbour(int t_cheapest)
 	arrowShape.setRotation(angle);
 }
 
-void Cell::render(sf::RenderWindow& t_window)
+void Cell::render(sf::RenderWindow& t_window, int t_renderChoice)
 {
 	t_window.draw(cellShape);
-	//t_window.draw(weightText);
-	t_window.draw(arrowShape);
+	if (t_renderChoice == 1)
+	{
+		t_window.draw(weightText);
+	}
+	else if (t_renderChoice == 2)
+	{
+		t_window.draw(arrowShape);
+	}
 }
