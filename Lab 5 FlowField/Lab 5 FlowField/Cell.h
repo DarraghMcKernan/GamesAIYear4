@@ -10,6 +10,7 @@ public:
 	void setCost(int t_cost);
 	int getCost();
 	void setCheapestNeighbour(int t_cheapest);
+	int getCheapestNeighbour();
 	void render(sf::RenderWindow& t_window, int t_renderChoice);
 private:
 	int cellNumber = 0;

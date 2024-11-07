@@ -24,31 +24,41 @@ void Grid::update()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && clickCooldown <= 0)//nothing displaying on cells
 	{
 		renderChoice = 0;
-		clickCooldown = 30;
+		clickCooldown = 10;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) && clickCooldown <= 0)//weights display on cells
 	{
 		renderChoice = 1;
-		clickCooldown = 30;
+		clickCooldown = 10;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) && clickCooldown <= 0)//integration field displays on cells
 	{
 		renderChoice = 2;
-		clickCooldown = 30;
+		clickCooldown = 10;
+	}
+
+	if (newWallTimer > 0)
+	{
+		if (newWallTimer == 1)
+		{
+			newWallGenerated = true;
+		}
+		newWallTimer--;
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown <= 0)//set start
 	{
 		startSet = true;
-		//setCells(startCellIndex, 0);
+		setCells(startCellIndex, 0);
 		startCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		//std::cout << startCellIndex << "\n";
-		//setCells(startCellIndex, 1);
+		setCells(startCellIndex, 1);
 		if (cellCostsGenerated == true)
 		{
 			
 		}
-		clickCooldown = 30;
+		clickCooldown =10;
+		clearPreviousPath();
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clickCooldown <= 0)//set goal
 	{
@@ -57,7 +67,7 @@ void Grid::update()
 		goalCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		//std::cout << goalCellIndex << "\n";
 		//setCells(goalCellIndex, 2);
-		clickCooldown = 30;
+		clickCooldown = 10;
 
 		generateIntegrationField();
 
@@ -67,19 +77,31 @@ void Grid::update()
 	{
 		wallCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		//std::cout << wallCellIndex << "\n";
-		if (cells[wallCellIndex].getType() == 0)
+		if (cells[wallCellIndex].getType() == 0 || cells[wallCellIndex].getType() == 4)
 		{
 			setCells(wallCellIndex, 3);
 		}
+		newWallTimer = 30;
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))//remove wall
 	{
 		wallCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
-		std::cout << wallCellIndex << "\n";
+		//std::cout << wallCellIndex << "\n";
 		if (cells[wallCellIndex].getType() == 3)
 		{
 			setCells(wallCellIndex, 0);
 		}
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown <= 0 && goalSet == true && startSet == true)//integration field displays on cells
+	{
+		drawPathToCheapest();
+		clickCooldown = 10;
+	}
+
+	if (newWallGenerated == true)//regenerate if a wall is created
+	{
+		newWallGenerated = false;
+		generateIntegrationField();
 	}
 }
 
@@ -104,9 +126,12 @@ void Grid::generateIntegrationField()
 	{
 		if(cells[i].getCost() != 999)
 		{
+			cells[i].setType(0);
 			cells[i].setCost(9999);
 		}
 	}
+
+	startSet = false;
 
 	std::queue<int> cellQueue;
 	cellQueue.push(goalCellIndex);//start at the goal and work outwards
@@ -150,16 +175,73 @@ void Grid::generateIntegrationField()
 			{
 				if(cells[neighborIndex].getCost() != 999 && cells[neighborIndex].getCost() > currentCost + 30)//make sure it isnt a value less than itself as that shows it hasnt been explored yet
 				{
-					cells[neighborIndex].setCost(currentCost + 30);//diagonal cost is 30
+					cells[neighborIndex].setCost(currentCost + 28);//diagonal cost is 30
 					cellQueue.push(neighborIndex);//put the cell we just found back into the queue so we can look at its neighours next
 				}
 			}
 		}
 	}
 	cellCostsGenerated = true;
+
+	generateFlowField();
 }
 
 void Grid::generateFlowField()
 {
+	for (int index = 0; index < cells.size(); index++)//go through all cells and check their neighbours, then point to the lowest cost one
+	{
+		if (cells[index].getCost() != 999)//dont check walls
+		{
+			int cheapest = cells[index].getCost();//must be cheaper than iself
+			int cheapestIndex = index;
+			int row = index / 50;
+			int col = index % 50;
 
+			std::vector<int> neighborCellNum = { index - 50,index + 50,index - 1,index + 1,index - 50 - 1,index - 50 + 1,index + 50 - 1,index + 50 + 1 };//used to check all neighbours surrounding the cell
+
+			for (int neighborIndex : neighborCellNum)
+			{
+				int neighborRow = neighborIndex / 50;
+				int neighborCol = neighborIndex % 50;
+
+				if (neighborIndex >= 0 && neighborIndex < cells.size())//prevent from going out of bounds and causing an exception error
+				{
+					if (cells[neighborIndex].getCost() < cheapest)//if its cheaper than other neighbours
+					{
+						cheapest = cells[neighborIndex].getCost();
+						cheapestIndex = neighborIndex;//which cell is the cheapest
+					}
+				}
+			}
+			cells[index].setCheapestNeighbour(cheapestIndex);
+		}
+	}
+}
+
+void Grid::drawPathToCheapest()
+{
+	clearPreviousPath();
+
+	int current = cells[startCellIndex].getCheapestNeighbour();
+	cheapestPath.push_back(startCellIndex);
+	
+	while (current != goalCellIndex)
+	{
+		cheapestPath.push_back(current);//store cheapest path 
+		cells[current].setType(4);
+		current = cells[current].getCheapestNeighbour();
+	}
+}
+
+void Grid::clearPreviousPath()
+{
+	if (cheapestPath.size() != 0)
+	{
+		for (int index = 0; index < cheapestPath.size(); index++)
+		{
+			cells[cheapestPath.at(index)].setType(0);//default
+		}
+	}
+
+	cheapestPath.clear();
 }

@@ -26,8 +26,8 @@ void Cell::setType(int t_cellType)
 	typeOfCell = t_cellType;
 	if (typeOfCell == 0)//default cell
 	{
-		cellShape.setFillColor(sf::Color(50, 50, 50));
-		setCost(0);
+		//cellShape.setFillColor(sf::Color(50, 50, 50));
+		setCost(cost);
 	}
 	else if (typeOfCell == 1)//start
 	{
@@ -43,6 +43,10 @@ void Cell::setType(int t_cellType)
 		cellShape.setFillColor(sf::Color::Black);
 		setCost(999);
 	}
+	else if (typeOfCell == 4)//path
+	{
+		cellShape.setFillColor(sf::Color(175, 175, 0));
+	}
 
 	weightText.setString(std::to_string(cost));
 }
@@ -57,18 +61,18 @@ void Cell::setCost(int t_cost)
 	cost = t_cost;
 	weightText.setString(std::to_string(cost));
 
-	if (cost == 9999)
+	if (cost == 999)
 	{
-		cellShape.setFillColor(sf::Color::Black);
+		cellShape.setFillColor(sf::Color::White);
 	}
 	else if (cost != 0)
 	{
-		int colour = cost/4;
-		if (colour > 255)
+		int colour = 255 - (cost/5);
+		if (colour < 0)
 		{
-			colour = 255;
+			colour = 0;
 		}
-		cellShape.setFillColor(sf::Color(colour, colour, colour));
+		cellShape.setFillColor(sf::Color(0, colour, colour));
 	}
 	else cellShape.setFillColor(sf::Color::Red);
 }
@@ -89,6 +93,11 @@ void Cell::setCheapestNeighbour(int t_cheapest)
 	angle = angle * 180 / 3.14159265f;
 
 	arrowShape.setRotation(angle);
+}
+
+int Cell::getCheapestNeighbour()
+{
+	return cheapesNeighbour;
 }
 
 void Cell::render(sf::RenderWindow& t_window, int t_renderChoice)

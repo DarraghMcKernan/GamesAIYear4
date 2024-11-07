@@ -11,10 +11,13 @@ public:
 	void render(sf::RenderWindow& t_window);
 	void generateIntegrationField();
 	void generateFlowField();
+	void drawPathToCheapest();
+	void clearPreviousPath();
 
 private:
 	int currentCellNum = 0;
 	std::vector<Cell> cells;
+	std::vector<int> cheapestPath;
 	sf::Vector2i mousePos;
 	sf::Font font;
 
@@ -24,8 +27,10 @@ private:
 
 	int clickCooldown = 0;
 	int renderChoice = 0;
+	int newWallTimer = 0;
 
 	bool goalSet = false;
 	bool startSet = false;
 	bool cellCostsGenerated = false;
+	bool newWallGenerated = false;
 };
