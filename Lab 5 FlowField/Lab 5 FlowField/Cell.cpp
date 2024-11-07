@@ -41,7 +41,7 @@ void Cell::setType(int t_cellType)
 	else if (typeOfCell == 3)//wall
 	{
 		cellShape.setFillColor(sf::Color::Black);
-		setCost(999);
+		setCost(99999);
 	}
 	else if (typeOfCell == 4)//path
 	{
@@ -61,7 +61,7 @@ void Cell::setCost(int t_cost)
 	cost = t_cost;
 	weightText.setString(std::to_string(cost));
 
-	if (cost == 999)
+	if (cost == 99999)
 	{
 		cellShape.setFillColor(sf::Color::White);
 	}
