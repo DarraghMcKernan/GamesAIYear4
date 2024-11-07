@@ -167,7 +167,7 @@ void Grid::generateIntegrationField()
 				{
 					cells[neighborIndex].setCost(currentCost + CELL_SIZE_INT);//cells are 20 so the distance is 20
 					cellQueue.push(neighborIndex);//put the cell we just found back into the queue so we can look at its neighours next
-					cells[neighborIndex].setCheapestNeighbour(currentIndex);//this renders flowfield function obsolete..... how did i not see this
+					cells[neighborIndex].setCheapestNeighbour(currentIndex);//this renders flowfield function obsolete..... not sure if thats a good thing or a bad thing
 				}
 			}
 		}
@@ -192,7 +192,7 @@ void Grid::generateIntegrationField()
 	}
 	cellCostsGenerated = true;
 
-	//generateFlowField();
+	//generateFlowField();//not needed to find cheapest neighbor as we know the cheapest cell is the cell we were on when scanning the neighbors
 }
 
 void Grid::generateFlowField()
