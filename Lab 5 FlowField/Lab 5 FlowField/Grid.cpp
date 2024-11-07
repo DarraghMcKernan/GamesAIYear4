@@ -53,12 +53,14 @@ void Grid::update()
 		startCellIndex = (mousePos.x / 20) + ((mousePos.y / 20) * 50);
 		//std::cout << startCellIndex << "\n";
 		setCells(startCellIndex, 1);
-		if (cellCostsGenerated == true)
+		
+		if (goalSet = true)
 		{
-			
+			drawPathToCheapest();
 		}
+
 		clickCooldown =10;
-		clearPreviousPath();
+		//clearPreviousPath();
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clickCooldown <= 0)//set goal
 	{
@@ -90,13 +92,15 @@ void Grid::update()
 		if (cells[wallCellIndex].getType() == 3)
 		{
 			setCells(wallCellIndex, 0);
+			cells[wallCellIndex].setCost(9999);
 		}
+		newWallTimer = 30;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown <= 0 && goalSet == true && startSet == true)//integration field displays on cells
-	{
-		drawPathToCheapest();
-		clickCooldown = 10;
-	}
+	//else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown <= 0 && goalSet == true && startSet == true)//integration field displays on cells
+	//{
+	//	drawPathToCheapest();
+	//	clickCooldown = 10;
+	//}
 
 	if (newWallGenerated == true)//regenerate if a wall is created
 	{
@@ -154,7 +158,7 @@ void Grid::generateIntegrationField()
 			int neighborRow = neighborIndex / 50;//get the row of the neighbour we are looking at
 			int neighborCol = neighborIndex % 50;
 
-			if(neighborIndex >= 0 && neighborIndex < cells.size())//prevent from going out of bounds and causing an exception error
+			if (neighborIndex >= 0 && neighborIndex < cells.size() && abs(neighborRow - row) <= 1 && abs(neighborCol - col) <= 1)//prevent from going out of bounds and causing an exception error also prevents going from left to right
 			{
 				if(cells[neighborIndex].getCost() != 999 && cells[neighborIndex].getCost() > currentCost + 20)//make sure it isnt a value less than itself as that shows it hasnt been explored yet
 				{
@@ -171,11 +175,11 @@ void Grid::generateIntegrationField()
 			int neighborRow = neighborIndex / 50;//get the row of the neighbour we are looking at
 			int neighborCol = neighborIndex % 50;
 
-			if(neighborIndex >= 0 && neighborIndex < cells.size())//prevent from going out of bounds and causing an exception error
+			if (neighborIndex >= 0 && neighborIndex < cells.size() && abs(neighborRow - row) <= 1 && abs(neighborCol - col) <= 1)//prevent from going out of bounds and causing an exception error
 			{
-				if(cells[neighborIndex].getCost() != 999 && cells[neighborIndex].getCost() > currentCost + 30)//make sure it isnt a value less than itself as that shows it hasnt been explored yet
+				if(cells[neighborIndex].getCost() != 999 && cells[neighborIndex].getCost() > currentCost + 30 && preventDiagonalLeaking(neighborIndex,currentIndex) == true)//make sure it isnt a value less than itself as that shows it hasnt been explored yet
 				{
-					cells[neighborIndex].setCost(currentCost + 28);//diagonal cost is 30
+					cells[neighborIndex].setCost(currentCost + 30);//diagonal cost is 30
 					cellQueue.push(neighborIndex);//put the cell we just found back into the queue so we can look at its neighours next
 				}
 			}
@@ -204,7 +208,7 @@ void Grid::generateFlowField()
 				int neighborRow = neighborIndex / 50;
 				int neighborCol = neighborIndex % 50;
 
-				if (neighborIndex >= 0 && neighborIndex < cells.size())//prevent from going out of bounds and causing an exception error
+				if (neighborIndex >= 0 && neighborIndex < cells.size() && abs(neighborRow - row) <= 1 && abs(neighborCol - col) <= 1)//prevent from going out of bounds and causing an exception error
 				{
 					if (cells[neighborIndex].getCost() < cheapest)//if its cheaper than other neighbours
 					{
@@ -244,4 +248,29 @@ void Grid::clearPreviousPath()
 	}
 
 	cheapestPath.clear();
+}
+
+bool Grid::preventDiagonalLeaking(int t_neighbour ,int t_index)
+{
+	std::vector<int> neighborCellNumDiagonal = { t_index - 50 - 1,t_index - 50 + 1,t_index + 50 - 1,t_index + 50 + 1 };
+
+	bool canMoveDiagonally = false;//this is so bad, i should have gone to bed hours ago :D
+	if (t_neighbour == neighborCellNumDiagonal[0] && cells[t_index - 50].getCost() != 999 && cells[t_index - 1].getCost() != 999)//get top left cell and make sure the cells up and to the left are not walls otherwise its impassable
+	{
+		canMoveDiagonally = true;
+	}
+	else if (t_neighbour == neighborCellNumDiagonal[1] && cells[t_index - 50].getCost() != 999 && cells[t_index + 1].getCost() != 999)
+	{
+		canMoveDiagonally = true;
+	}
+	else if (t_neighbour == neighborCellNumDiagonal[2] && cells[t_index + 50].getCost() != 999 && cells[t_index - 1].getCost() != 999)
+	{
+		canMoveDiagonally = true;
+	}
+	else if (t_neighbour == neighborCellNumDiagonal[3] && cells[t_index + 50].getCost() != 999 && cells[t_index + 1].getCost() != 999)
+	{
+		canMoveDiagonally = true;
+	}
+
+	return canMoveDiagonally;
 }

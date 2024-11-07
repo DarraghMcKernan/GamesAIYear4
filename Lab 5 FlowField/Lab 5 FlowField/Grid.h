@@ -13,6 +13,7 @@ public:
 	void generateFlowField();
 	void drawPathToCheapest();
 	void clearPreviousPath();
+	bool preventDiagonalLeaking(int t_neighbour,int t_index);
 
 private:
 	int currentCellNum = 0;
