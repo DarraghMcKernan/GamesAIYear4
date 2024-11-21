@@ -11,4 +11,5 @@ public:
 
 private:
 	std::vector<Cell> cells;
+	sf::RectangleShape boardWall;
 };
