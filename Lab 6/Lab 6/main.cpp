@@ -13,7 +13,7 @@
 #endif  
 
 #include "globals.h"
-#include "Grid.h"
+#include "Game.h"
 
 void main()
 {
@@ -24,8 +24,8 @@ void main()
 	sf::Clock clock;
 	clock.restart();
 
-	Grid myGrid;
-	myGrid.init();
+	Game myGame;
+	myGame.init();
 
 	while (window.isOpen())
 	{
@@ -38,13 +38,14 @@ void main()
 
 		timeSinceLastUpdate += clock.restart();
 
-		myGrid.update();
-
+		
 		if (timeSinceLastUpdate > timePerFrame)
 		{
+			myGame.update();
+
 			window.clear(sf::Color::Black);
 
-			myGrid.render(window);
+			myGame.render(window);
 
 			window.display();
 
