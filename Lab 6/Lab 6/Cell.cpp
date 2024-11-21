@@ -20,3 +20,8 @@ void Cell::render(sf::RenderWindow& t_window)
 {
 	t_window.draw(cellShape);
 }
+
+sf::RectangleShape Cell::getCellShape()
+{
+	return cellShape;
+}

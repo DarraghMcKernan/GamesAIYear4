@@ -9,6 +9,7 @@ public:
 	void init();
 	void update();
 	void render(sf::RenderWindow& t_window);
+	sf::Vector2f lockNearestCell();
 
 private:
 	Grid myGrid;
@@ -19,4 +20,5 @@ private:
 	bool teamOne =true;
 
 	std::vector<GameShapes> tempShapes;
+	std::vector<GameShapes> highlighter;
 };

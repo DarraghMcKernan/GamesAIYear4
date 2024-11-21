@@ -27,3 +27,15 @@ void Grid::render(sf::RenderWindow& t_window)
 		cells[index].render(t_window);
 	}
 }
+
+sf::Vector2f Grid::returnHoveredCellPos(sf::Vector2f t_mousePos)
+{
+	for (int index = 0; index < MAX_CELLS; index++)
+	{
+		if (cells[index].getCellShape().getGlobalBounds().contains(t_mousePos))
+		{
+			return cells[index].getCellShape().getPosition();
+		}
+	}
+	return sf::Vector2f(-1000,-1000);
+}

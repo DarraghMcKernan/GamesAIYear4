@@ -7,8 +7,10 @@ public:
 	GameShapes(int t_shapeType,int t_team, sf::Vector2f t_originPos,int t_rotation);
 	void update();
 	void render(sf::RenderWindow& t_window);
-	void generatePiece();
+	void generatePiece(int t_shapeType);
 	void rotatePieceRight();
+	void updateOriginPos(sf::Vector2f t_newPos);
+	sf::Vector2f returnOriginPos();
 
 private:
 	int type;

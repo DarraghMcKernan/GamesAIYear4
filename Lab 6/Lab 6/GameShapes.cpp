@@ -3,17 +3,42 @@
 GameShapes::GameShapes(int t_shapeType, int t_team, sf::Vector2f t_originPos, int t_rotation) :type(t_shapeType), team(t_team), originPos(t_originPos), rotation(t_rotation)
 {
 	originPos -= sf::Vector2f{CELL_SIZE * 1.0f, CELL_SIZE* 1.0f };
+
+	sf::RectangleShape tempPiece;
+
 	if (team == 0)
 	{
 		teamColour = sf::Color(200,50,50);
+		tempPiece.setFillColor(teamColour);
 	}
-	else teamColour = sf::Color(50, 50, 200);
+	else if (team == 1)
+	{
+		teamColour = sf::Color(50, 50, 200);
+		tempPiece.setFillColor(teamColour);
+	}
+	else if (team == 2) 
+	{
+		teamColour = sf::Color(50, 200, 50);
+		tempPiece.setFillColor(sf::Color::Transparent);
+		tempPiece.setOutlineColor(teamColour);
+		tempPiece.setOutlineThickness(4);
+	}
+
 	if (t_shapeType == 0)
 	{
 		teamColour = sf::Color(200, 200, 200);
 	}
 
-	generatePiece();
+	tempPiece.setSize({ CELL_SIZE ,CELL_SIZE });
+	tempPiece.setOrigin({ CELL_SIZE / 2 ,CELL_SIZE / 2 });
+	tempPiece.setPosition({ -10000,-1000 });
+
+	for (int index = 0; index < 9; index++)
+	{
+		pieceShapes.push_back(tempPiece);
+	}
+
+	generatePiece(type);
 }
 
 void GameShapes::update()
@@ -41,14 +66,11 @@ void GameShapes::render(sf::RenderWindow& t_window)
 //infirmary 9 	   5 pieces
 //castle 10        5 pieces
 //tower 11         5 pieces
-void GameShapes::generatePiece()
+void GameShapes::generatePiece(int t_shapeType)
 {
+	type = t_shapeType;
+
 	sf::Vector2f offsetPos = originPos;
-	sf::RectangleShape tempPiece;
-	tempPiece.setFillColor(teamColour);
-	tempPiece.setSize({ CELL_SIZE ,CELL_SIZE });
-	tempPiece.setOrigin({ CELL_SIZE/2 ,CELL_SIZE/2 });
-	tempPiece.setPosition(originPos);
 
 	if (type == 1)
 	{
@@ -137,13 +159,26 @@ void GameShapes::generatePiece()
 
 		if (pieceShapesPositions[index] == 1)
 		{
-			tempPiece.setPosition(offsetPos);
-			pieceShapes.push_back(tempPiece);
+			pieceShapes[index].setPosition(offsetPos);
 		}
+		else pieceShapes[index].setPosition({-10000,-1000});
 	}
 }
 
 void GameShapes::rotatePieceRight()
 {
 
+}
+
+void GameShapes::updateOriginPos(sf::Vector2f t_newPos)
+{
+	originPos = t_newPos;
+	originPos -= sf::Vector2f{ (CELL_SIZE * 1.0f) +1, (CELL_SIZE * 1.0f) +1};
+
+	generatePiece(type);
+}
+
+sf::Vector2f GameShapes::returnOriginPos()
+{
+	return originPos + sf::Vector2f{ CELL_SIZE * 1.0f, CELL_SIZE * 1.0f };;
 }
