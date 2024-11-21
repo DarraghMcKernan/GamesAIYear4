@@ -11,6 +11,7 @@ public:
 	void rotatePieceRight();
 	void updateOriginPos(sf::Vector2f t_newPos);
 	sf::Vector2f returnOriginPos();
+	void updateTeamNum(int t_num);
 
 private:
 	int type;

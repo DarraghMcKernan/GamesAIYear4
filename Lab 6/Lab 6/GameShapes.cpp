@@ -16,10 +16,17 @@ GameShapes::GameShapes(int t_shapeType, int t_team, sf::Vector2f t_originPos, in
 		teamColour = sf::Color(50, 50, 200);
 		tempPiece.setFillColor(teamColour);
 	}
-	else if (team == 2) 
+	else if (team == 2)//for highlighter
 	{
 		teamColour = sf::Color(50, 200, 50);
-		tempPiece.setFillColor(sf::Color::Transparent);
+		tempPiece.setFillColor(sf::Color(200, 50, 50,50));
+		tempPiece.setOutlineColor(teamColour);
+		tempPiece.setOutlineThickness(4);
+	}
+	else if (team == 3)//for highlighter
+	{
+		teamColour = sf::Color(50, 200, 50);
+		tempPiece.setFillColor(sf::Color(50, 50, 200, 50));
 		tempPiece.setOutlineColor(teamColour);
 		tempPiece.setOutlineThickness(4);
 	}
@@ -181,4 +188,40 @@ void GameShapes::updateOriginPos(sf::Vector2f t_newPos)
 sf::Vector2f GameShapes::returnOriginPos()
 {
 	return originPos + sf::Vector2f{ CELL_SIZE * 1.0f, CELL_SIZE * 1.0f };;
+}
+
+void GameShapes::updateTeamNum(int t_num)
+{
+	team = t_num;
+
+	if (team == 0)
+	{
+		teamColour = sf::Color(200, 50, 50);
+		for (int index = 0; index < 9; index++)
+		{
+			pieceShapes[index].setFillColor(teamColour);
+		}
+	}
+	else if (team == 1)
+	{
+		teamColour = sf::Color(50, 50, 200);
+		for (int index = 0; index < 9; index++)
+		{
+			pieceShapes[index].setFillColor(teamColour);
+		}
+	}
+	else if (team == 2)//for highlighter
+	{
+		for (int index = 0; index < 9; index++)
+		{
+			pieceShapes[index].setFillColor(sf::Color(200, 50, 50, 50));
+		}
+	}
+	else if (team == 3)//for highlighter
+	{
+		for (int index = 0; index < 9; index++)
+		{
+			pieceShapes[index].setFillColor(sf::Color(50, 50, 200, 50));
+		}
+	}
 }

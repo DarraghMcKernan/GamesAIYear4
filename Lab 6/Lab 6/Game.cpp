@@ -74,14 +74,21 @@ void Game::update()
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown == 0)
 	{
+		std::cout << "shape placed\n";
 		clickCooldown = 30;
-		GameShapes tempShape(type, teamOne, highlighter[0].returnOriginPos(), 0);
+		GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), 0);
 		tempShapes.push_back(tempShape);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown == 0)
 	{
 		clickCooldown = 30;
-		teamOne = !teamOne;
+		if (teamNum == 0)
+		{
+			teamNum = 1;
+		}
+		else teamNum = 0;
+
+		highlighter[0].updateTeamNum(teamNum + 2);
 	}
 }
 
