@@ -71,13 +71,23 @@ void Game::update()
 		type = 11;
 		highlighter[0].generatePiece(type);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && clickCooldown == 0)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && clickCooldown == 0)
 	{
 		clickCooldown = 30;
 		rotation++;
 		if (rotation == 4)
 		{
 			rotation = 0;
+		}
+		highlighter[0].rotatePieceRight(rotation);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && clickCooldown == 0)
+	{
+		clickCooldown = 30;
+		rotation--;
+		if (rotation == -1)
+		{
+			rotation = 3;
 		}
 		highlighter[0].rotatePieceRight(rotation);
 	}
