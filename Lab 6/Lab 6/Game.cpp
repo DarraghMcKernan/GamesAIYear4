@@ -110,6 +110,15 @@ void Game::update()
 
 		highlighter[0].updateTeamNum(teamNum + 2);
 	}
+
+	if (placementValid == false)//if placement is invalid
+	{
+		highlighter[0].updateTeamNum(4);//set outline to red
+	}
+	else 
+	{ 
+		highlighter[0].updateTeamNum(teamNum + 2);
+	}
 }
 
 void Game::render(sf::RenderWindow& t_window)

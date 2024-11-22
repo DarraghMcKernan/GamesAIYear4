@@ -20,6 +20,8 @@ private:
 	int teamNum = 0;
 	int rotation = 0;
 
+	bool placementValid = true;
+
 	std::vector<GameShapes> tempShapes;
 	std::vector<GameShapes> highlighter;
 };

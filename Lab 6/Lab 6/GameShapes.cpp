@@ -34,6 +34,10 @@ GameShapes::GameShapes(int t_shapeType, int t_team, sf::Vector2f t_originPos, in
 		tempPiece.setOutlineColor(teamColour);
 		tempPiece.setOutlineThickness(4);
 	}
+	else if (team == 4)//for red outline
+	{
+		tempPiece.setOutlineColor(sf::Color(200,50,50));
+	}
 
 	if (t_shapeType == 0)
 	{
@@ -266,6 +270,7 @@ void GameShapes::updateTeamNum(int t_num)
 		for (int index = 0; index < 9; index++)
 		{
 			pieceShapes[index].setFillColor(sf::Color(200, 50, 50, 50));
+			pieceShapes[index].setOutlineColor(teamColour);
 		}
 	}
 	else if (team == 3)//for highlighter
@@ -273,6 +278,14 @@ void GameShapes::updateTeamNum(int t_num)
 		for (int index = 0; index < 9; index++)
 		{
 			pieceShapes[index].setFillColor(sf::Color(50, 50, 200, 50));
+			pieceShapes[index].setOutlineColor(teamColour);
+		}
+	}
+	else if (team == 4)//for red outline
+	{
+		for (int index = 0; index < 9; index++)
+		{
+			pieceShapes[index].setOutlineColor(sf::Color(200, 50, 50));
 		}
 	}
 }
