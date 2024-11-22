@@ -157,6 +157,8 @@ void GameShapes::generatePiece(int t_shapeType)
 		,1,0,0 };
 	}
 
+	rotatePieceRight(rotation);
+
 	for (int index = 0; index < 9; index++)
 	{
 		int row = index / 3;
@@ -170,10 +172,55 @@ void GameShapes::generatePiece(int t_shapeType)
 		}
 		else pieceShapes[index].setPosition({-10000,-1000});
 	}
+
+	
 }
 
-void GameShapes::rotatePieceRight()
+void GameShapes::redoShapes()
 {
+	sf::Vector2f offsetPos = originPos;
+	for (int index = 0; index < 9; index++)
+	{
+		int row = index / 3;
+		int col = index % 3;
+
+		offsetPos = originPos + sf::Vector2f{ (col * CELL_SIZE) * 1.0f, (row * CELL_SIZE) * 1.0f };
+
+		if (pieceShapesPositions[index] == 1)
+		{
+			pieceShapes[index].setPosition(offsetPos);
+		}
+		else pieceShapes[index].setPosition({ -10000,-1000 });
+	}
+}
+
+void GameShapes::rotatePieceRight(int t_rotation)
+{
+	rotation = t_rotation;
+	std::vector<int>rotatedPositions = pieceShapesPositions;
+
+	/*{
+	  0, 1, 2
+	, 3, 4, 5
+	, 6, 7, 8
+	};*/
+	for (int index = 0; index < rotation; index++)
+	{
+		rotatedPositions[0] = pieceShapesPositions[6];
+		rotatedPositions[1] = pieceShapesPositions[3];
+		rotatedPositions[2] = pieceShapesPositions[0];
+
+		rotatedPositions[3] = pieceShapesPositions[7];
+		//rotatedPositions[4] = pieceShapesPositions[3];
+		rotatedPositions[5] = pieceShapesPositions[1];
+
+		rotatedPositions[6] = pieceShapesPositions[8];
+		rotatedPositions[7] = pieceShapesPositions[5];
+		rotatedPositions[8] = pieceShapesPositions[2];
+
+		pieceShapesPositions.clear();
+		pieceShapesPositions = rotatedPositions;
+	}
 
 }
 

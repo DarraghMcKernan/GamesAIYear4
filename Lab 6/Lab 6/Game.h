@@ -18,6 +18,7 @@ private:
 	int type = 1;
 	int clickCooldown=0;
 	int teamNum = 0;
+	int rotation = 0;
 
 	std::vector<GameShapes> tempShapes;
 	std::vector<GameShapes> highlighter;

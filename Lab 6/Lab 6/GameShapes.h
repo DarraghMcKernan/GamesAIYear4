@@ -8,7 +8,8 @@ public:
 	void update();
 	void render(sf::RenderWindow& t_window);
 	void generatePiece(int t_shapeType);
-	void rotatePieceRight();
+	void redoShapes();
+	void rotatePieceRight(int t_rotation);
 	void updateOriginPos(sf::Vector2f t_newPos);
 	sf::Vector2f returnOriginPos();
 	void updateTeamNum(int t_num);
@@ -16,7 +17,7 @@ public:
 private:
 	int type;
 	int team;
-	int rotation;
+	int rotation = 0;
 
 	std::vector<sf::RectangleShape> pieceShapes;
 	sf::Vector2f originPos;

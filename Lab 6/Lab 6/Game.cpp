@@ -71,12 +71,22 @@ void Game::update()
 		type = 11;
 		highlighter[0].generatePiece(type);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && clickCooldown == 0)
+	{
+		clickCooldown = 30;
+		rotation++;
+		if (rotation == 4)
+		{
+			rotation = 0;
+		}
+		highlighter[0].rotatePieceRight(rotation);
+	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown == 0)
 	{
 		std::cout << "shape placed\n";
 		clickCooldown = 30;
-		GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), 0);
+		GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
 		tempShapes.push_back(tempShape);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown == 0)
