@@ -13,6 +13,7 @@ public:
 	void updateOriginPos(sf::Vector2f t_newPos);
 	sf::Vector2f returnOriginPos();
 	void updateTeamNum(int t_num);
+	sf::RectangleShape checkCollisions(sf::RectangleShape t_shapeToCheck);
 
 private:
 	int type;

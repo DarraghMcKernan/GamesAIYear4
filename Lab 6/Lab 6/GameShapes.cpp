@@ -276,3 +276,19 @@ void GameShapes::updateTeamNum(int t_num)
 		}
 	}
 }
+
+sf::RectangleShape GameShapes::checkCollisions(sf::RectangleShape t_shapeToCheck)
+{
+	sf::RectangleShape temp;
+	temp.setPosition({ -100,-100 });
+
+	for (int index = 0; index < 9; index++)
+	{
+		if (pieceShapes[index].getGlobalBounds().intersects(t_shapeToCheck.getGlobalBounds()))
+		{
+			return pieceShapes[index];
+		}
+	}
+
+	return temp;
+}

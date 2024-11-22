@@ -10,6 +10,7 @@ Cell::Cell(int t_cellNum):cellNum(t_cellNum)
 	if (cellNum / 12 == 0 || cellNum / 12 == 11 || cellNum % 12 == 0 || cellNum % 12 == 11)
 	{
 		cellShape.setFillColor(sf::Color(80, 40, 15));
+		type = 1;
 		//cellShape.setOutlineColor(sf::Color(50, 50, 50));
 		//cellShape.setOutlineThickness(2);
 	}
@@ -33,4 +34,9 @@ void Cell::render(sf::RenderWindow& t_window)
 sf::RectangleShape Cell::getCellShape()
 {
 	return cellShape;
+}
+
+int Cell::getCellType()
+{
+	return type;
 }

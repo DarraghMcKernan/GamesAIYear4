@@ -32,7 +32,7 @@ sf::Vector2f Grid::returnHoveredCellPos(sf::Vector2f t_mousePos)
 {
 	for (int index = 0; index < MAX_CELLS; index++)
 	{
-		if (cells[index].getCellShape().getGlobalBounds().contains(t_mousePos))
+		if (cells[index].getCellShape().getGlobalBounds().contains(t_mousePos) && cells[index].getCellType() != 1)
 		{
 			return cells[index].getCellShape().getPosition();
 		}
