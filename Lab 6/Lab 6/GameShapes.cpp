@@ -10,11 +10,15 @@ GameShapes::GameShapes(int t_shapeType, int t_team, sf::Vector2f t_originPos, in
 	{
 		teamColour = sf::Color(200,50,50);
 		tempPiece.setFillColor(teamColour);
+		tempPiece.setOutlineColor(sf::Color(50, 50, 50));
+		tempPiece.setOutlineThickness(2);
 	}
 	else if (team == 1)
 	{
 		teamColour = sf::Color(50, 50, 200);
 		tempPiece.setFillColor(teamColour);
+		tempPiece.setOutlineColor(sf::Color(50, 50, 50));
+		tempPiece.setOutlineThickness(2);
 	}
 	else if (team == 2)//for highlighter
 	{
@@ -36,8 +40,8 @@ GameShapes::GameShapes(int t_shapeType, int t_team, sf::Vector2f t_originPos, in
 		teamColour = sf::Color(200, 200, 200);
 	}
 
-	tempPiece.setSize({ CELL_SIZE ,CELL_SIZE });
-	tempPiece.setOrigin({ CELL_SIZE / 2 ,CELL_SIZE / 2 });
+	tempPiece.setSize({ CELL_SIZE -2,CELL_SIZE-2 });
+	tempPiece.setOrigin({ (CELL_SIZE / 2) -1 ,(CELL_SIZE / 2) -1 });
 	tempPiece.setPosition({ -10000,-1000 });
 
 	for (int index = 0; index < 9; index++)
