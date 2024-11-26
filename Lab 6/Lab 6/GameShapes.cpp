@@ -93,6 +93,7 @@ void GameShapes::generatePiece(int t_shapeType)
 			{0,0,0
 			,0,1,0
 			,0,0,0 };
+		shapesActive = 1;
 	}
 	else if (type == 2)
 	{
@@ -100,6 +101,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,0
 		,0,1,0
 		,0,0,0 };
+		shapesActive = 2;
 	}
 	else if (type == 3)
 	{
@@ -107,6 +109,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,0
 		,1,1,0
 		,0,0,0 };
+		shapesActive = 3;
 	}
 	else if (type == 4)
 	{
@@ -114,6 +117,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,0
 		,0,1,0
 		,0,1,0 };
+		shapesActive = 3;
 	}
 	else if (type == 5)
 	{
@@ -121,6 +125,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{1,1,0
 		,1,1,0
 		,0,0,0 };
+		shapesActive = 4;
 	}
 	else if (type == 6)
 	{
@@ -128,6 +133,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,0
 		,1,1,0
 		,0,1,0 };
+		shapesActive = 4;
 	}
 	else if (type == 7)
 	{
@@ -135,6 +141,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,1
 		,1,1,0
 		,0,0,0 };
+		shapesActive = 4;
 	}
 	else if (type == 8)
 	{
@@ -142,6 +149,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{1,1,0
 		,0,1,1
 		,0,1,0 };
+		shapesActive = 5;
 	}
 	else if (type == 9)
 	{
@@ -149,6 +157,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,0
 		,1,1,1
 		,0,1,0 };
+		shapesActive = 5;
 	}
 	else if (type == 10)
 	{
@@ -156,6 +165,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,0,0
 		,1,1,1
 		,1,0,1 };
+		shapesActive = 5;
 	}
 	else if (type == 11)
 	{
@@ -163,6 +173,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		{0,1,1
 		,1,1,0
 		,1,0,0 };
+		shapesActive = 5;
 	}
 
 	rotatePieceRight(rotation);
@@ -290,18 +301,37 @@ void GameShapes::updateTeamNum(int t_num)
 	}
 }
 
-sf::RectangleShape GameShapes::checkCollisions(sf::RectangleShape t_shapeToCheck)
+bool GameShapes::checkCollisions(std::vector<Cell> t_nearbyCells)
 {
-	sf::RectangleShape temp;
-	temp.setPosition({ -100,-100 });
+	//-10000,-1000
+	int collisionsValid = 0;//need 9 hits to be allowed to pass
 
-	for (int index = 0; index < 9; index++)
+	cellChecked = {false,false,false,false,false,false,false,false,false};
+
+	for (int cells = 0; cells < t_nearbyCells.size(); cells++)
 	{
-		if (pieceShapes[index].getGlobalBounds().intersects(t_shapeToCheck.getGlobalBounds()))
+		for (int index = 0; index < 9; index++)
 		{
-			return pieceShapes[index];
+			if (pieceShapes[index].getGlobalBounds().intersects(t_nearbyCells[cells].getCellShape().getGlobalBounds()) && (t_nearbyCells[index].getCellType() == 0) && cellChecked[index] == false)
+			{
+				cellChecked[index] = true;
+				continue;//found a cell for the piece - look for more
+			}
 		}
 	}
 
-	return temp;
+	for (int index = 0; index < 9; index++)
+	{
+		if (cellChecked[index] == true)
+		{
+			collisionsValid++;
+		}
+	}
+
+	if (collisionsValid == shapesActive)//if all used squares are accounted for
+	{
+		return true;
+	}
+
+	return false;
 }

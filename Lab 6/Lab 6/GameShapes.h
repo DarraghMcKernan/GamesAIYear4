@@ -1,5 +1,6 @@
 #pragma once
 #include "globals.h"
+#include "Cell.h"
 
 class GameShapes
 {
@@ -13,12 +14,14 @@ public:
 	void updateOriginPos(sf::Vector2f t_newPos);
 	sf::Vector2f returnOriginPos();
 	void updateTeamNum(int t_num);
-	sf::RectangleShape checkCollisions(sf::RectangleShape t_shapeToCheck);
+	bool checkCollisions(std::vector<Cell> t_nearbyCells);
+	std::vector<bool> cellChecked;
 
 private:
 	int type;
 	int team;
 	int rotation = 0;
+	int shapesActive = 0;
 
 	std::vector<sf::RectangleShape> pieceShapes;
 	sf::Vector2f originPos;

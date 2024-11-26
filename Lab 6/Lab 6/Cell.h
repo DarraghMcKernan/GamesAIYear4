@@ -9,6 +9,7 @@ public:
 	void render(sf::RenderWindow& t_window);
 	sf::RectangleShape getCellShape();
 	int getCellType();
+	void setCellType(int t_type);
 
 private:
 	int cellNum = 0;

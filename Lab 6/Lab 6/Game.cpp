@@ -94,10 +94,17 @@ void Game::update()
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown == 0)
 	{
-		std::cout << "shape placed\n";
+		//std::cout << "shape placed\n";
 		clickCooldown = 30;
-		GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
-		tempShapes.push_back(tempShape);
+		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true)
+		{
+			myGrid.setCellsTo(highlighter[0].cellChecked);
+			//std::cout << "position is valid\n";
+			GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
+			tempShapes.push_back(tempShape);
+		}
+
+		
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown == 0)
 	{

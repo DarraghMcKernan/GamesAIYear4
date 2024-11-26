@@ -6,12 +6,6 @@ void Grid::init()
 	{
 		cells.push_back(Cell(index));
 	}
-
-	/*boardWall.setSize({ (CELL_SIZE * MAX_CELLS / 10) + CELL_SIZE -10, (CELL_SIZE * MAX_CELLS / 10) + CELL_SIZE -10});
-	boardWall.setPosition({ 5,5 });
-	boardWall.setFillColor(sf::Color(80, 40, 15));
-	boardWall.setOutlineThickness(5);
-	boardWall.setOutlineColor(sf::Color(50, 50, 50));*/
 }
 
 void Grid::update()
@@ -30,12 +24,45 @@ void Grid::render(sf::RenderWindow& t_window)
 
 sf::Vector2f Grid::returnHoveredCellPos(sf::Vector2f t_mousePos)
 {
+	mousePos = t_mousePos;
+
 	for (int index = 0; index < MAX_CELLS; index++)
 	{
-		if (cells[index].getCellShape().getGlobalBounds().contains(t_mousePos) && cells[index].getCellType() != 1)
+		if (cells[index].getCellShape().getGlobalBounds().contains(mousePos) && cells[index].getCellType() != 1)
 		{
+			cellHoveredNumber = index;
 			return cells[index].getCellShape().getPosition();
 		}
 	}
 	return sf::Vector2f(-1000,-1000);
+}
+
+std::vector<Cell> Grid::returnNearbyCellPos()
+{
+	std::vector<Cell> nearbyCells;
+
+	nearbyCells.push_back(cells[cellHoveredNumber - GRID_SIZE -1]);
+	nearbyCells.push_back(cells[cellHoveredNumber - GRID_SIZE]);
+	nearbyCells.push_back(cells[cellHoveredNumber - GRID_SIZE+1]);
+	
+	nearbyCells.push_back(cells[cellHoveredNumber -1]);
+	nearbyCells.push_back(cells[cellHoveredNumber]);
+	nearbyCells.push_back(cells[cellHoveredNumber+1]);
+	
+	nearbyCells.push_back(cells[cellHoveredNumber + GRID_SIZE-1]);
+	nearbyCells.push_back(cells[cellHoveredNumber+ GRID_SIZE]);
+	nearbyCells.push_back(cells[cellHoveredNumber+GRID_SIZE+1]);
+	
+	return nearbyCells;
+}
+
+void Grid::setCellsTo(std::vector<bool> t_cellsUsed)
+{
+	for (int row = -1; row < 1; row++)
+	{
+		for (int col = -1; col < 1; col++)
+		{
+			cells[row * (col * GRID_SIZE)].setCellType(1);
+		}
+	}
 }

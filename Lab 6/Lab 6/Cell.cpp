@@ -4,7 +4,8 @@ Cell::Cell(int t_cellNum):cellNum(t_cellNum)
 {
 	cellShape.setSize({ CELL_SIZE,CELL_SIZE });
 	cellShape.setOrigin({ CELL_SIZE / 2,CELL_SIZE / 2 });
-	sf::Vector2f temp = { static_cast<float>(cellNum / GRID_SIZE) * CELL_SIZE,static_cast<float>(cellNum % GRID_SIZE) * CELL_SIZE };
+	sf::Vector2f temp = { static_cast<float>(cellNum % GRID_SIZE) * CELL_SIZE,static_cast<float>(cellNum / GRID_SIZE) * CELL_SIZE };
+	//sf::Vector2f temp = { static_cast<float>(cellNum / GRID_SIZE) * CELL_SIZE,static_cast<float>(cellNum % GRID_SIZE) * CELL_SIZE };
 	cellShape.setPosition({ temp.x + (CELL_SIZE/2),temp.y + (CELL_SIZE/2) });
 
 	if (cellNum / 12 == 0 || cellNum / 12 == 11 || cellNum % 12 == 0 || cellNum % 12 == 11)
@@ -39,4 +40,9 @@ sf::RectangleShape Cell::getCellShape()
 int Cell::getCellType()
 {
 	return type;
+}
+
+void Cell::setCellType(int t_type)
+{
+	type = t_type;
 }
