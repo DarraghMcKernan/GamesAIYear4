@@ -58,11 +58,27 @@ std::vector<Cell> Grid::returnNearbyCellPos()
 
 void Grid::setCellsTo(std::vector<bool> t_cellsUsed)
 {
-	for (int row = -1; row < 1; row++)
+	for (int index = 0; index < t_cellsUsed.size(); index++)
+	{
+		if (t_cellsUsed[index] == true)
+		{
+			int offset = (((index / 3) - 1) * GRID_SIZE) + ((index % 3) - 1);
+
+			int currentCell = cellHoveredNumber + offset;
+
+			cells[currentCell].setCellType(1);
+		}
+	}
+
+
+	/*for (int row = -1; row < 1; row++)
 	{
 		for (int col = -1; col < 1; col++)
 		{
-			cells[row * (col * GRID_SIZE)].setCellType(1);
+			if (t_cellsUsed[(row + 1) * (col + 1)] == true)
+			{
+				cells[cellHoveredNumber + (row * (col * GRID_SIZE))].setCellType(1);
+			}
 		}
-	}
+	}*/
 }

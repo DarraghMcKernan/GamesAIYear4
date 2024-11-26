@@ -44,5 +44,6 @@ int Cell::getCellType()
 
 void Cell::setCellType(int t_type)
 {
+	cellShape.setFillColor(sf::Color(0, 0, 0));
 	type = t_type;
 }
