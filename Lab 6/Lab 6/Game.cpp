@@ -16,6 +16,11 @@ void Game::update()
 	}
 
 	myGrid.update();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		type = 0;
+		highlighter[0].generatePiece(type);
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 	{
 		type = 1;
@@ -102,11 +107,17 @@ void Game::update()
 			//std::cout << "position is valid\n";
 			GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
 			tempShapes.push_back(tempShape);
-		}
 
-		
+			if (teamNum == 0)
+			{
+				teamNum = 1;
+			}
+			else teamNum = 0;
+
+			highlighter[0].updateTeamNum(teamNum + 2);
+		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown == 0)
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown == 0)
 	{
 		clickCooldown = 30;
 		if (teamNum == 0)
@@ -116,7 +127,7 @@ void Game::update()
 		else teamNum = 0;
 
 		highlighter[0].updateTeamNum(teamNum + 2);
-	}
+	}*/
 
 	if (placementValid == false)//if placement is invalid
 	{

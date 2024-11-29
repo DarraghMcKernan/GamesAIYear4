@@ -16,12 +16,16 @@ public:
 	void updateTeamNum(int t_num);
 	bool checkCollisions(std::vector<Cell> t_nearbyCells);
 	std::vector<bool> cellChecked;
+	bool checkIfPieceUsed(int t_pieceNum);
 
 private:
 	int type;
 	int team;
 	int rotation = 0;
 	int shapesActive = 0;
+	int piecesNeeded = 10;
+
+	std::vector<int> piecesUsed;
 
 	std::vector<sf::RectangleShape> pieceShapes;
 	sf::Vector2f originPos;

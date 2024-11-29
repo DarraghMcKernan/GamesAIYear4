@@ -48,7 +48,7 @@ GameShapes::GameShapes(int t_shapeType, int t_team, sf::Vector2f t_originPos, in
 	tempPiece.setOrigin({ (CELL_SIZE / 2) -1 ,(CELL_SIZE / 2) -1 });
 	tempPiece.setPosition({ -10000,-1000 });
 
-	for (int index = 0; index < 9; index++)
+	for (int index = 0; index < piecesNeeded; index++)
 	{
 		pieceShapes.push_back(tempPiece);
 	}
@@ -63,7 +63,7 @@ void GameShapes::update()
 
 void GameShapes::render(sf::RenderWindow& t_window)
 {
-	for (int index = 0; index < pieceShapes.size(); index++)
+	for (int index = 0; index < piecesNeeded; index++)
 	{
 		t_window.draw(pieceShapes[index]);
 	}
@@ -87,12 +87,22 @@ void GameShapes::generatePiece(int t_shapeType)
 
 	sf::Vector2f offsetPos = originPos;
 
-	if (type == 1)
+	if (type == 0)
+	{
+		pieceShapesPositions =
+		{0,1,0
+		,1,1,1
+		,0,1,0 ,0 };
+
+		shapesActive = 6;
+	}
+
+	else if (type == 1)
 	{
 		pieceShapesPositions = 
 			{0,0,0
 			,0,1,0
-			,0,0,0 };
+			,0,0,0 ,0 };
 		shapesActive = 1;
 	}
 	else if (type == 2)
@@ -100,7 +110,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,0,1,0
-		,0,0,0 };
+		,0,0,0 ,0 };
 		shapesActive = 2;
 	}
 	else if (type == 3)
@@ -108,7 +118,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,0
-		,0,0,0 };
+		,0,0,0 ,0 };
 		shapesActive = 3;
 	}
 	else if (type == 4)
@@ -116,7 +126,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,0,1,0
-		,0,1,0 };
+		,0,1,0 ,0 };
 		shapesActive = 3;
 	}
 	else if (type == 5)
@@ -124,7 +134,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{1,1,0
 		,1,1,0
-		,0,0,0 };
+		,0,0,0 ,0 };
 		shapesActive = 4;
 	}
 	else if (type == 6)
@@ -132,7 +142,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,0
-		,0,1,0 };
+		,0,1,0 ,0 };
 		shapesActive = 4;
 	}
 	else if (type == 7)
@@ -140,7 +150,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,1
 		,1,1,0
-		,0,0,0 };
+		,0,0,0 ,0 };
 		shapesActive = 4;
 	}
 	else if (type == 8)
@@ -148,7 +158,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{1,1,0
 		,0,1,1
-		,0,1,0 };
+		,0,1,0 ,0 };
 		shapesActive = 5;
 	}
 	else if (type == 9)
@@ -156,7 +166,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,1
-		,0,1,0 };
+		,0,1,0 ,0 };
 		shapesActive = 5;
 	}
 	else if (type == 10)
@@ -164,7 +174,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,0,0
 		,1,1,1
-		,1,0,1 };
+		,1,0,1 ,0 };
 		shapesActive = 5;
 	}
 	else if (type == 11)
@@ -172,13 +182,13 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,1
 		,1,1,0
-		,1,0,0 };
+		,1,0,0 ,0 };
 		shapesActive = 5;
 	}
 
 	rotatePieceRight(rotation);
 
-	for (int index = 0; index < 9; index++)
+	for (int index = 0; index < piecesNeeded; index++)
 	{
 		int row = index / 3;
 		int col = index % 3;
@@ -190,15 +200,40 @@ void GameShapes::generatePiece(int t_shapeType)
 			pieceShapes[index].setPosition(offsetPos);
 		}
 		else pieceShapes[index].setPosition({-10000,-1000});
-	}
 
-	
+		/*{
+		  0, 1, 2
+		, 3, 4, 5
+		, 6, 7, 8 ,9
+		};*/
+
+		if (type == 0 && index == 1 && rotation == 0)
+		{//the last piece will be 1 out from the rotation corner
+			offsetPos.y -= CELL_SIZE;
+			pieceShapes[9].setPosition(offsetPos);//set last piece as the offset
+		}
+		else if (type == 0 && index == 5 && rotation == 1)
+		{
+			offsetPos.x += CELL_SIZE;
+			pieceShapes[9].setPosition(offsetPos);
+		}
+		else if (type == 0 && index == 7 && rotation == 2)
+		{
+			offsetPos.y += CELL_SIZE;
+			pieceShapes[9].setPosition(offsetPos);
+		}
+		else if (type == 0 && index == 3 && rotation == 3)
+		{
+			offsetPos.x -= CELL_SIZE;
+			pieceShapes[9].setPosition(offsetPos);
+		}
+	}
 }
 
 void GameShapes::redoShapes()
 {
 	sf::Vector2f offsetPos = originPos;
-	for (int index = 0; index < 9; index++)
+	for (int index = 0; index < piecesNeeded; index++)
 	{
 		int row = index / 3;
 		int col = index % 3;
@@ -215,32 +250,37 @@ void GameShapes::redoShapes()
 
 void GameShapes::rotatePieceRight(int t_rotation)
 {
-	rotation = t_rotation;
-	std::vector<int>rotatedPositions = pieceShapesPositions;
-
-	/*{
-	  0, 1, 2
-	, 3, 4, 5
-	, 6, 7, 8
-	};*/
-	for (int index = 0; index < rotation; index++)
+	if (type == 0)
 	{
-		rotatedPositions[0] = pieceShapesPositions[6];
-		rotatedPositions[1] = pieceShapesPositions[3];
-		rotatedPositions[2] = pieceShapesPositions[0];
-
-		rotatedPositions[3] = pieceShapesPositions[7];
-		//rotatedPositions[4] = pieceShapesPositions[3];
-		rotatedPositions[5] = pieceShapesPositions[1];
-
-		rotatedPositions[6] = pieceShapesPositions[8];
-		rotatedPositions[7] = pieceShapesPositions[5];
-		rotatedPositions[8] = pieceShapesPositions[2];
-
-		pieceShapesPositions.clear();
-		pieceShapesPositions = rotatedPositions;
+		rotation = t_rotation;
 	}
+	else {
+		rotation = t_rotation;
+		std::vector<int>rotatedPositions = pieceShapesPositions;
 
+		/*{
+		  0, 1, 2
+		, 3, 4, 5
+		, 6, 7, 8
+		};*/
+		for (int index = 0; index < rotation; index++)
+		{
+			rotatedPositions[0] = pieceShapesPositions[6];
+			rotatedPositions[1] = pieceShapesPositions[3];
+			rotatedPositions[2] = pieceShapesPositions[0];
+
+			rotatedPositions[3] = pieceShapesPositions[7];
+			//rotatedPositions[4] = pieceShapesPositions[3];
+			rotatedPositions[5] = pieceShapesPositions[1];
+
+			rotatedPositions[6] = pieceShapesPositions[8];
+			rotatedPositions[7] = pieceShapesPositions[5];
+			rotatedPositions[8] = pieceShapesPositions[2];
+
+			pieceShapesPositions.clear();
+			pieceShapesPositions = rotatedPositions;
+		}
+	}
 }
 
 void GameShapes::updateOriginPos(sf::Vector2f t_newPos)
@@ -263,7 +303,7 @@ void GameShapes::updateTeamNum(int t_num)
 	if (team == 0)
 	{
 		teamColour = sf::Color(200, 50, 50);
-		for (int index = 0; index < 9; index++)
+		for (int index = 0; index < piecesNeeded; index++)
 		{
 			pieceShapes[index].setFillColor(teamColour);
 		}
@@ -271,14 +311,14 @@ void GameShapes::updateTeamNum(int t_num)
 	else if (team == 1)
 	{
 		teamColour = sf::Color(50, 50, 200);
-		for (int index = 0; index < 9; index++)
+		for (int index = 0; index < piecesNeeded; index++)
 		{
 			pieceShapes[index].setFillColor(teamColour);
 		}
 	}
 	else if (team == 2)//for highlighter
 	{
-		for (int index = 0; index < 9; index++)
+		for (int index = 0; index < piecesNeeded; index++)
 		{
 			pieceShapes[index].setFillColor(sf::Color(200, 50, 50, 50));
 			pieceShapes[index].setOutlineColor(teamColour);
@@ -286,7 +326,7 @@ void GameShapes::updateTeamNum(int t_num)
 	}
 	else if (team == 3)//for highlighter
 	{
-		for (int index = 0; index < 9; index++)
+		for (int index = 0; index < piecesNeeded; index++)
 		{
 			pieceShapes[index].setFillColor(sf::Color(50, 50, 200, 50));
 			pieceShapes[index].setOutlineColor(teamColour);
@@ -294,7 +334,7 @@ void GameShapes::updateTeamNum(int t_num)
 	}
 	else if (team == 4)//for red outline
 	{
-		for (int index = 0; index < 9; index++)
+		for (int index = 0; index < piecesNeeded; index++)
 		{
 			pieceShapes[index].setOutlineColor(sf::Color(200, 50, 50));
 		}
@@ -310,7 +350,7 @@ bool GameShapes::checkCollisions(std::vector<Cell> t_nearbyCells)
 
 	for (int cells = 0; cells < t_nearbyCells.size(); cells++)
 	{
-		for (int index = 0; index < 9; index++)
+		for (int index = 0; index < piecesNeeded; index++)
 		{
 			if (pieceShapes[index].getGlobalBounds().intersects(t_nearbyCells[cells].getCellShape().getGlobalBounds()) && (t_nearbyCells[index].getCellType() == 0) && cellChecked[index] == false)
 			{
@@ -320,7 +360,7 @@ bool GameShapes::checkCollisions(std::vector<Cell> t_nearbyCells)
 		}
 	}
 
-	for (int index = 0; index < 9; index++)
+	for (int index = 0; index < piecesNeeded; index++)
 	{
 		if (cellChecked[index] == true)
 		{
@@ -332,6 +372,13 @@ bool GameShapes::checkCollisions(std::vector<Cell> t_nearbyCells)
 	{
 		return true;
 	}
+
+	return false;
+}
+
+bool GameShapes::checkIfPieceUsed(int t_pieceNum)
+{
+
 
 	return false;
 }
