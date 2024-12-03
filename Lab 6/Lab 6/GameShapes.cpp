@@ -92,7 +92,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,1
-		,0,1,0 ,0 };
+		,0,1,0 };
 
 		shapesActive = 6;
 	}
@@ -102,7 +102,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions = 
 			{0,0,0
 			,0,1,0
-			,0,0,0 ,0 };
+			,0,0,0 };
 		shapesActive = 1;
 	}
 	else if (type == 2)
@@ -110,7 +110,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,0,1,0
-		,0,0,0 ,0 };
+		,0,0,0  };
 		shapesActive = 2;
 	}
 	else if (type == 3)
@@ -118,7 +118,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,0
-		,0,0,0 ,0 };
+		,0,0,0  };
 		shapesActive = 3;
 	}
 	else if (type == 4)
@@ -126,7 +126,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,0,1,0
-		,0,1,0 ,0 };
+		,0,1,0  };
 		shapesActive = 3;
 	}
 	else if (type == 5)
@@ -134,7 +134,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{1,1,0
 		,1,1,0
-		,0,0,0 ,0 };
+		,0,0,0  };
 		shapesActive = 4;
 	}
 	else if (type == 6)
@@ -142,7 +142,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,0
-		,0,1,0 ,0 };
+		,0,1,0  };
 		shapesActive = 4;
 	}
 	else if (type == 7)
@@ -150,7 +150,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,1
 		,1,1,0
-		,0,0,0 ,0 };
+		,0,0,0  };
 		shapesActive = 4;
 	}
 	else if (type == 8)
@@ -158,7 +158,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{1,1,0
 		,0,1,1
-		,0,1,0 ,0 };
+		,0,1,0  };
 		shapesActive = 5;
 	}
 	else if (type == 9)
@@ -166,7 +166,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,0
 		,1,1,1
-		,0,1,0 ,0 };
+		,0,1,0  };
 		shapesActive = 5;
 	}
 	else if (type == 10)
@@ -174,7 +174,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,0,0
 		,1,1,1
-		,1,0,1 ,0 };
+		,1,0,1  };
 		shapesActive = 5;
 	}
 	else if (type == 11)
@@ -182,7 +182,7 @@ void GameShapes::generatePiece(int t_shapeType)
 		pieceShapesPositions =
 		{0,1,1
 		,1,1,0
-		,1,0,0 ,0 };
+		,1,0,0  };
 		shapesActive = 5;
 	}
 
@@ -210,22 +210,22 @@ void GameShapes::generatePiece(int t_shapeType)
 		if (type == 0 && index == 1 && rotation == 0)
 		{//the last piece will be 1 out from the rotation corner
 			offsetPos.y -= CELL_SIZE;
-			pieceShapes[9].setPosition(offsetPos);//set last piece as the offset
+			pieceShapes[0].setPosition(offsetPos);//set last piece as the offset
 		}
 		else if (type == 0 && index == 5 && rotation == 1)
 		{
 			offsetPos.x += CELL_SIZE;
-			pieceShapes[9].setPosition(offsetPos);
+			pieceShapes[0].setPosition(offsetPos);
 		}
 		else if (type == 0 && index == 7 && rotation == 2)
 		{
 			offsetPos.y += CELL_SIZE;
-			pieceShapes[9].setPosition(offsetPos);
+			pieceShapes[0].setPosition(offsetPos);
 		}
 		else if (type == 0 && index == 3 && rotation == 3)
 		{
 			offsetPos.x -= CELL_SIZE;
-			pieceShapes[9].setPosition(offsetPos);
+			pieceShapes[0].setPosition(offsetPos);
 		}
 	}
 }
@@ -381,4 +381,18 @@ bool GameShapes::checkIfPieceUsed(int t_pieceNum)
 
 
 	return false;
+}
+
+bool GameShapes::isCathedral()
+{
+	if (type == 0)
+	{
+		return true;
+	}
+	else return false;
+}
+
+int GameShapes::getRotation()
+{
+	return rotation;
 }

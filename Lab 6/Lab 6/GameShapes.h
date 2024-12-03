@@ -17,13 +17,15 @@ public:
 	bool checkCollisions(std::vector<Cell> t_nearbyCells);
 	std::vector<bool> cellChecked;
 	bool checkIfPieceUsed(int t_pieceNum);
+	bool isCathedral();
+	int getRotation();
 
 private:
 	int type;
 	int team;
 	int rotation = 0;
 	int shapesActive = 0;
-	int piecesNeeded = 10;
+	int piecesNeeded = 9;
 
 	std::vector<int> piecesUsed;
 

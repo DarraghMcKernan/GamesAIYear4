@@ -56,7 +56,7 @@ std::vector<Cell> Grid::returnNearbyCellPos()
 	return nearbyCells;
 }
 
-void Grid::setCellsTo(std::vector<bool> t_cellsUsed)
+void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rotation)
 {
 	for (int index = 0; index < t_cellsUsed.size(); index++)
 	{
@@ -66,10 +66,31 @@ void Grid::setCellsTo(std::vector<bool> t_cellsUsed)
 
 			int currentCell = cellHoveredNumber + offset;
 
-			cells[currentCell].setCellType(1);
+			if (t_cathedral == false || index != 0)
+			{
+				cells[currentCell].setCellType(1);
+			}
+
+			if (t_cathedral == true && index == 1 && t_rotation == 0)
+			{//the last piece will be 1 out from the rotation corner
+				/*std::cout << currentCell << "\n";
+				std::cout << currentCell - GRID_SIZE << "\n";*/
+				cells[currentCell - GRID_SIZE].setCellType(1);
+			}
+			else if (t_cathedral == true && index == 5 && t_rotation == 1)
+			{
+				cells[currentCell + 1].setCellType(1);
+			}
+			else if (t_cathedral == true && index == 7 && t_rotation == 2)
+			{
+				cells[currentCell + GRID_SIZE].setCellType(1);
+			}
+			else if (t_cathedral == true && index == 3 && t_rotation == 3)
+			{
+				cells[currentCell - 1].setCellType(1);
+			}
 		}
 	}
-
 
 	/*for (int row = -1; row < 1; row++)
 	{

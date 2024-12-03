@@ -103,7 +103,7 @@ void Game::update()
 		clickCooldown = 30;
 		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true)
 		{
-			myGrid.setCellsTo(highlighter[0].cellChecked);
+			myGrid.setCellsTo(highlighter[0].cellChecked,highlighter[0].isCathedral(), highlighter[0].getRotation());
 			//std::cout << "position is valid\n";
 			GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
 			tempShapes.push_back(tempShape);
