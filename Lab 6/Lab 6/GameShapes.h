@@ -20,6 +20,7 @@ public:
 	bool isCathedral();
 	int getRotation();
 	void scalePiece(float t_scale);
+	int getHoveredType(sf::Vector2f t_mousePos);
 
 private:
 	int type;

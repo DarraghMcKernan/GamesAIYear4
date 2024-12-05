@@ -38,9 +38,16 @@ void Game::update()
 	}
 
 	myGrid.update();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		type = 0;
+		for (int index = 0; index < PIECES_PER_TEAM - 4; index++)
+		{
+			int temp = pieceButtons[index].getHoveredType(mousePos);
+			if (temp != 0)
+			{
+				type = temp;
+			}			
+		}
 		highlighter[0].generatePiece(type);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))

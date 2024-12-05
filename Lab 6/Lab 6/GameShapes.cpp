@@ -401,3 +401,16 @@ void GameShapes::scalePiece(float t_scale)
 {
 
 }
+
+int GameShapes::getHoveredType(sf::Vector2f t_mousePos)
+{
+	for (int index = 0; index < piecesNeeded; index++)
+	{
+		if (pieceShapes[index].getGlobalBounds().contains({ t_mousePos.x,t_mousePos.y }))
+		{
+			return type;
+		}
+	}
+
+	return 0;
+}
