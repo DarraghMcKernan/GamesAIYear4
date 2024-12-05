@@ -47,7 +47,8 @@ void Game::update()
 			if (temp != 0)
 			{
 				type = temp;
-			}			
+			}
+			pieceSelected = true;
 		}
 		highlighter[0].generatePiece(type);
 	}
@@ -90,6 +91,8 @@ void Game::update()
 			}
 			else teamNum = 0;
 
+			pieceSelected = false;
+
 			highlighter[0].updateTeamNum(teamNum + 2);
 		}
 	}
@@ -124,5 +127,10 @@ void Game::render(sf::RenderWindow& t_window)
 
 sf::Vector2f Game::lockNearestCell()
 {
-	return myGrid.returnHoveredCellPos(mousePos);
+	sf::Vector2f temp = myGrid.returnHoveredCellPos(mousePos);
+	if (temp == sf::Vector2f({ -1000,-1000 }))
+	{
+		return mousePos;
+	}
+	return temp;
 }

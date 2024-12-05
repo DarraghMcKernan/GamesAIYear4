@@ -21,6 +21,7 @@ private:
 	int rotation = 0;
 
 	bool placementValid = true;
+	bool pieceSelected = false;
 
 	std::vector<GameShapes> gamePieces;
 	std::vector<GameShapes> highlighter;
