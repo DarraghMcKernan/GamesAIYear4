@@ -42,6 +42,7 @@ void Game::update()
 	{
 		for (int index = 0; index < PIECES_PER_TEAM - 4; index++)
 		{
+			pieceButtons[index].updateTeamNum(teamNum);
 			int temp = pieceButtons[index].getHoveredType(mousePos);
 			if (temp != 0)
 			{
