@@ -51,61 +51,7 @@ void Game::update()
 		}
 		highlighter[0].generatePiece(type);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-	{
-		type = 1;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-	{
-		type = 2;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-	{
-		type = 3;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
-	{
-		type = 4;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
-	{
-		type = 5;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-	{
-		type = 6;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
-	{
-		type = 7;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-	{
-		type = 8;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
-	{
-		type = 9;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
-	{
-		type = 10;
-		highlighter[0].generatePiece(type);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Hyphen))
-	{
-		type = 11;
-		highlighter[0].generatePiece(type);
-	}
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && clickCooldown == 0)
 	{
 		clickCooldown = 30;
@@ -147,17 +93,6 @@ void Game::update()
 			highlighter[0].updateTeamNum(teamNum + 2);
 		}
 	}
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && clickCooldown == 0)
-	{
-		clickCooldown = 30;
-		if (teamNum == 0)
-		{
-			teamNum = 1;
-		}
-		else teamNum = 0;
-
-		highlighter[0].updateTeamNum(teamNum + 2);
-	}*/
 
 	if (placementValid == false)//if placement is invalid
 	{
