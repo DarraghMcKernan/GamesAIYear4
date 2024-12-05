@@ -396,3 +396,8 @@ int GameShapes::getRotation()
 {
 	return rotation;
 }
+
+void GameShapes::scalePiece(float t_scale)
+{
+
+}

@@ -19,6 +19,7 @@ public:
 	bool checkIfPieceUsed(int t_pieceNum);
 	bool isCathedral();
 	int getRotation();
+	void scalePiece(float t_scale);
 
 private:
 	int type;

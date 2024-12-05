@@ -22,6 +22,7 @@ private:
 
 	bool placementValid = true;
 
-	std::vector<GameShapes> tempShapes;
+	std::vector<GameShapes> gamePieces;
 	std::vector<GameShapes> highlighter;
+	std::vector<GameShapes> pieceButtons;
 };

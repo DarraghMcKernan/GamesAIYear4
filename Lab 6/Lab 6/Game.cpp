@@ -4,8 +4,30 @@ void Game::init()
 {
 	myGrid.init();
 
-	GameShapes highlighterShape(1, 2, { mousePos.x ,mousePos.y }, 0);
+	GameShapes highlighterShape(0, 2, { mousePos.x ,mousePos.y }, 0);
 	highlighter.push_back(highlighterShape);
+
+	for(int index = 0;index < PIECES_PER_TEAM-4;index++)
+	{
+		int rotation = 1;
+		sf::Vector2f startPos = { 1050.0f + ((index % 3) * CELL_SIZE * 4), 150.0f + (250 * (index / 3)) };
+		if (index > 2)
+		{
+			startPos.y -= 50;
+		}
+		if (index > 5)
+		{
+			startPos.y -= 50;
+		}
+		if (index == 9)
+		{
+			rotation = 2;
+			startPos.y += 25;
+			startPos.x += 300;
+		}
+		GameShapes tempButtons(index + 1, 0, startPos, rotation);
+		pieceButtons.push_back(tempButtons);
+	}
 }
 
 void Game::update()
@@ -106,7 +128,7 @@ void Game::update()
 			myGrid.setCellsTo(highlighter[0].cellChecked,highlighter[0].isCathedral(), highlighter[0].getRotation());
 			//std::cout << "position is valid\n";
 			GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
-			tempShapes.push_back(tempShape);
+			gamePieces.push_back(tempShape);
 
 			if (teamNum == 0)
 			{
@@ -145,11 +167,16 @@ void Game::render(sf::RenderWindow& t_window)
 	highlighter[0].updateOriginPos(lockNearestCell());
 	myGrid.render(t_window);
 
-	for (int index = 0; index < tempShapes.size(); index++)
+	for (int index = 0; index < gamePieces.size(); index++)
 	{
-		tempShapes[index].render(t_window);
+		gamePieces[index].render(t_window);
 	}
 	highlighter[0].render(t_window);
+
+	for (int index = 0; index < PIECES_PER_TEAM-4 ; index++)
+	{
+		pieceButtons[index].render(t_window);
+	}
 }
 
 sf::Vector2f Game::lockNearestCell()
