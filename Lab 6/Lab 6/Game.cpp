@@ -90,11 +90,17 @@ void Game::update()
 			{
 				std::cout << "valid\n";
 				pieceButtons[index].updateTeamNum(teamNum);
+				
 				type = temp;
 				pieceSelected = true;
 				highlighter[0].useType(type);
 				highlighter[0].generatePiece(type);
-			}			
+
+				if (highlighter[0].pieceAllowed(temp) == false)
+				{
+					pieceButtons[index].deactivateButton();
+				}
+			}	
 		}
 	}
 	

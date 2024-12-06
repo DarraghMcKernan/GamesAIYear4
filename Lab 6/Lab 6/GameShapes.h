@@ -23,6 +23,7 @@ public:
 	int getHoveredType(sf::Vector2f t_mousePos);
 	void useType(int t_type);
 	bool pieceAllowed(int t_type);
+	void deactivateButton();
 
 private:
 	int type;

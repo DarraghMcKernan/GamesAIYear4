@@ -448,3 +448,11 @@ bool GameShapes::pieceAllowed(int t_type)
 
 	return false;
 }
+
+void GameShapes::deactivateButton()
+{
+	for (int index = 0; index < piecesNeeded; index++)
+	{
+		pieceShapes[index].setFillColor(sf::Color(100, 50, 50));
+	}
+}
