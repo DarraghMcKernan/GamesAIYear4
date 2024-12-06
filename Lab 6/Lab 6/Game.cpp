@@ -51,12 +51,13 @@ void Game::update()
 		highlighter[0].updateOriginPos(lockToKnownCell(aiCell));
 		highlighter[0].rotatePieceRight(aiRotation);
 		highlighter[0].generatePiece(aiPiece);
+		highlighter[0].updateTeamNum(3);
 		
 
 		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true)
 		{
 			myGrid.setCellsTo(highlighter[0].cellChecked, highlighter[0].isCathedral(), highlighter[0].getRotation());
-			std::cout << "position is valid\n";
+			//std::cout << "position is valid\n";
 			GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), aiRotation);
 			gamePieces.push_back(tempShape);
 
@@ -74,18 +75,20 @@ void Game::update()
 
 			highlighter[0].updateOriginPos(lockNearestCell());
 			highlighter[0].rotatePieceRight(rotation);
+			highlighter[0].updateTeamNum(2);
 			highlighter[0].generatePiece(type);
 		}
 	}
 	//*/
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && pieceSelected == false)
 	{
 		for (int index = 0; index < PIECES_PER_TEAM - 4; index++)
 		{			
 			int temp = pieceButtons[index].getHoveredType(mousePos);
 			if (highlighter[0].pieceAllowed(temp) == true)
 			{
+				std::cout << "valid\n";
 				pieceButtons[index].updateTeamNum(teamNum);
 				type = temp;
 				pieceSelected = true;

@@ -12,12 +12,12 @@ void AIDescisionMaker::update()
 
 int AIDescisionMaker::pickCellToPlace()
 {
-
-	chosenCell -= 11;
+	chosenCell = rand() % MAX_CELLS;
+	
 	return chosenCell;
 }
 
-int AIDescisionMaker::pickPieceToPlace()
+int AIDescisionMaker::pickPieceToPlace() 
 {
 	return 4;
 }
