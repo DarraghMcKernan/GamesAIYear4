@@ -414,3 +414,14 @@ int GameShapes::getHoveredType(sf::Vector2f t_mousePos)
 
 	return 0;
 }
+
+void GameShapes::useType(int t_type)
+{
+	if (team == 0)//player
+	{
+
+	}
+	else {//ai
+
+	}
+}

@@ -21,6 +21,7 @@ public:
 	int getRotation();
 	void scalePiece(float t_scale);
 	int getHoveredType(sf::Vector2f t_mousePos);
+	void useType(int t_type);
 
 private:
 	int type;
@@ -28,6 +29,7 @@ private:
 	int rotation = 0;
 	int shapesActive = 0;
 	int piecesNeeded = 9;
+	int timesUsed = 0;
 
 	std::vector<int> piecesUsed;
 

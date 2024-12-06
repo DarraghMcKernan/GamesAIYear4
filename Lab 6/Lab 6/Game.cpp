@@ -76,11 +76,6 @@ void Game::update()
 			highlighter[0].rotatePieceRight(rotation);
 			highlighter[0].generatePiece(type);
 		}
-
-		//GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), rotation);
-		//gamePieces.push_back(tempShape);
-
-		//playersTurn = true;
 	}
 	//*/
 
