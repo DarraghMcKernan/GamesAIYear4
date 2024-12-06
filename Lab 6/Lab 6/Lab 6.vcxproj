@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIDecisionMaker.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameShapes.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIDecisionMaker.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameShapes.h" />

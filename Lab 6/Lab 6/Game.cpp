@@ -38,6 +38,22 @@ void Game::update()
 	}
 
 	myGrid.update();
+	/*
+	if (playersTurn == false && clickCooldown == 0)
+	{
+		int aiPiece = myAI.pickPieceToPlace();
+		int aiCell = myAI.pickCellToPlace();
+		int aiRotation = myAI.pickRotation();
+
+		sf::Vector2f position;
+		highlighter[0].updateOriginPos(position);
+
+		GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), rotation);
+		gamePieces.push_back(tempShape);
+
+		playersTurn = true;
+	}*/
+
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		for (int index = 0; index < PIECES_PER_TEAM - 4; index++)
@@ -94,6 +110,9 @@ void Game::update()
 			pieceSelected = false;
 
 			highlighter[0].updateTeamNum(teamNum + 2);
+
+			//playersTurn = false;
+			//clickCooldown = 30;
 		}
 	}
 

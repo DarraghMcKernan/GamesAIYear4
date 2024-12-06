@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "Grid.h"
 #include "GameShapes.h"
+#include "AIDecisionMaker.h"
 
 class Game
 {
@@ -15,13 +16,20 @@ private:
 	Grid myGrid;
 	sf::Vector2f mousePos;
 
-	int type = 1;
+	AIDescisionMaker myAI;
+
+	int type = 0;
 	int clickCooldown=0;
 	int teamNum = 0;
 	int rotation = 0;
 
+	/**
+	* 
+	* 
+	*/
 	bool placementValid = true;
 	bool pieceSelected = false;
+	bool playersTurn = true;
 
 	std::vector<GameShapes> gamePieces;
 	std::vector<GameShapes> highlighter;
