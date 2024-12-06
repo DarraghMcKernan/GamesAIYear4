@@ -11,6 +11,7 @@ public:
 	void update();
 	void render(sf::RenderWindow& t_window);
 	sf::Vector2f lockNearestCell();
+	sf::Vector2f lockToKnownCell(int t_cellNum);
 
 private:
 	Grid myGrid;

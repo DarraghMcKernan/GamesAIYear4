@@ -14,10 +14,15 @@ int AIDescisionMaker::pickCellToPlace()
 {
 
 
-	return 0;
+	return 30;
 }
 
 int AIDescisionMaker::pickPieceToPlace()
 {
 	return 4;
+}
+
+int AIDescisionMaker::pickRotation()
+{
+	return 1;
 }

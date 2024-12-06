@@ -38,21 +38,51 @@ void Game::update()
 	}
 
 	myGrid.update();
-	/*
+	
+	///*
 	if (playersTurn == false && clickCooldown == 0)
 	{
 		int aiPiece = myAI.pickPieceToPlace();
 		int aiCell = myAI.pickCellToPlace();
 		int aiRotation = myAI.pickRotation();
 
-		sf::Vector2f position;
-		highlighter[0].updateOriginPos(position);
+		
 
-		GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), rotation);
-		gamePieces.push_back(tempShape);
+		highlighter[0].updateOriginPos(lockToKnownCell(aiCell));
+		highlighter[0].rotatePieceRight(aiRotation);
+		highlighter[0].generatePiece(aiPiece);
+		
 
-		playersTurn = true;
-	}*/
+		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true)
+		{
+			myGrid.setCellsTo(highlighter[0].cellChecked, highlighter[0].isCathedral(), highlighter[0].getRotation());
+			//std::cout << "position is valid\n";
+			GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), aiRotation);
+			gamePieces.push_back(tempShape);
+
+			if (teamNum == 0)
+			{
+				teamNum = 1;
+			}
+			else teamNum = 0;
+
+			pieceSelected = false;
+
+			highlighter[0].updateTeamNum(teamNum + 2);
+
+			playersTurn = true;
+
+			highlighter[0].updateOriginPos(lockNearestCell());
+			highlighter[0].rotatePieceRight(rotation);
+			highlighter[0].generatePiece(type);
+		}
+
+		//GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), rotation);
+		//gamePieces.push_back(tempShape);
+
+		//playersTurn = true;
+	}
+	//*/
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
@@ -90,7 +120,7 @@ void Game::update()
 		highlighter[0].rotatePieceRight(rotation);
 	}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown == 0)
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickCooldown == 0 && pieceSelected == true)
 	{
 		//std::cout << "shape placed\n";
 		clickCooldown = 30;
@@ -111,7 +141,7 @@ void Game::update()
 
 			highlighter[0].updateTeamNum(teamNum + 2);
 
-			//playersTurn = false;
+			playersTurn = false;
 			//clickCooldown = 30;
 		}
 	}
@@ -151,5 +181,14 @@ sf::Vector2f Game::lockNearestCell()
 	{
 		return mousePos;
 	}
+	return temp;
+}
+
+sf::Vector2f Game::lockToKnownCell(int t_cellNum)
+{
+	sf::Vector2f tempFakeMousePos = { ((t_cellNum / GRID_SIZE) * CELL_SIZE * 1.0f) + CELL_SIZE / 3,((t_cellNum % GRID_SIZE) * CELL_SIZE * 1.0f) + CELL_SIZE / 3 };
+
+	sf::Vector2f temp = myGrid.returnHoveredCellPos(tempFakeMousePos);
+	
 	return temp;
 }
