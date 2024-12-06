@@ -22,6 +22,7 @@ public:
 	void scalePiece(float t_scale);
 	int getHoveredType(sf::Vector2f t_mousePos);
 	void useType(int t_type);
+	bool pieceAllowed(int t_type);
 
 private:
 	int type;
@@ -30,6 +31,9 @@ private:
 	int shapesActive = 0;
 	int piecesNeeded = 9;
 	int timesUsed = 0;
+
+	int playerPiecesUsed[11] = {0,0,0,0 ,0,0,0,0, 0,0,0};
+	int AIPiecesUsed[11] = {0,0,0,0 ,0,0,0,0, 0,0,0};
 
 	std::vector<int> piecesUsed;
 

@@ -417,11 +417,34 @@ int GameShapes::getHoveredType(sf::Vector2f t_mousePos)
 
 void GameShapes::useType(int t_type)
 {
-	if (team == 0)//player
+	if (team == 2)//player
 	{
-
+		playerPiecesUsed[t_type]++;
+		std::cout << t_type << "\n";
 	}
 	else {//ai
-
+		AIPiecesUsed[t_type]++;
 	}
+}
+
+bool GameShapes::pieceAllowed(int t_type)
+{
+	if (team == 2)
+	{
+		if (t_type == 1 || t_type == 2 || t_type == 3)
+		{
+			if (playerPiecesUsed[t_type] < 2)
+			{
+				std::cout << t_type << "\n";
+				return true;
+			}
+		}
+		else if (playerPiecesUsed[t_type] < 1)
+		{
+			std::cout << t_type << "\n";
+			return true;
+		}
+	}
+
+	return false;
 }

@@ -13,8 +13,8 @@ void AIDescisionMaker::update()
 int AIDescisionMaker::pickCellToPlace()
 {
 
-
-	return 30;
+	chosenCell -= 11;
+	return chosenCell;
 }
 
 int AIDescisionMaker::pickPieceToPlace()

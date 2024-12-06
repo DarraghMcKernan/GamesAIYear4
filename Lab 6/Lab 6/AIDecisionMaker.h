@@ -10,5 +10,5 @@ public:
 	int pickRotation();
 
 private:
-
+	int chosenCell = 49;
 };
