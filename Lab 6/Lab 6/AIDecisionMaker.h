@@ -12,4 +12,7 @@ public:
 
 private:
 	int chosenCell = 49;
+
+	int AIPiecesUsed[11] = { 0,0,0,0 ,0,0,0,0, 0,0,0};
+	int currentPiece = 10;
 };

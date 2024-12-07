@@ -24,6 +24,7 @@ public:
 	void useType(int t_type);
 	bool pieceAllowed(int t_type);
 	void deactivateButton();
+	std::vector<int> getMatrixOfCells();
 
 private:
 	int type;

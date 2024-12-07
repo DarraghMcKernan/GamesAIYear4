@@ -24,6 +24,10 @@ private:
 	int teamNum = 0;
 	int rotation = 0;
 
+	int aiPiece = 0;
+	int aiRotation = 0;
+	int aiCell = 0;
+
 	/**
 	* 
 	* 
@@ -31,6 +35,8 @@ private:
 	bool placementValid = true;
 	bool pieceSelected = false;
 	bool playersTurn = true;
+	bool aiBeganSearch = false;
+	bool gameOver = false;
 
 	std::vector<GameShapes> gamePieces;
 	std::vector<GameShapes> highlighter;

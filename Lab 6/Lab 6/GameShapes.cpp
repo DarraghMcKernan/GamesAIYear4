@@ -456,3 +456,8 @@ void GameShapes::deactivateButton()
 		pieceShapes[index].setFillColor(sf::Color(100, 50, 50));
 	}
 }
+
+std::vector<int> GameShapes::getMatrixOfCells()
+{
+	return pieceShapesPositions;//compare the matrix of positions to the list of 9 cells around the mouse and if the 1's here line up with 0's on the grid its valids
+}

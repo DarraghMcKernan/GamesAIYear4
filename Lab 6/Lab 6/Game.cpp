@@ -38,27 +38,42 @@ void Game::update()
 	}
 
 	myGrid.update();
+	if (gameOver == true)
+	{
+		std::cout << "game over\n";
+	}
 	
 	///*
-	if (playersTurn == false && clickCooldown == 0)
+	if (playersTurn == false && clickCooldown == 0 && gameOver == false)
 	{
-		int aiPiece = myAI.pickPieceToPlace();
-		int aiCell = myAI.pickCellToPlace();
-		int aiRotation = myAI.pickRotation();
+		clickCooldown = 0;
+		if (aiBeganSearch == false)
+		{
+			aiPiece = myAI.pickPieceToPlace();
+			std::cout << aiPiece << " AI PIECE CHOSEN\n";
+			if (aiPiece < 0)//no more valid pieces - end the game
+			{
+				gameOver = true;
+			}
+			aiRotation = myAI.pickRotation();
+
+			aiBeganSearch = true;
+		}
+		aiCell = myAI.pickCellToPlace();
 
 		
 
 		highlighter[0].updateOriginPos(lockToKnownCell(aiCell));
 		highlighter[0].rotatePieceRight(aiRotation);
-		highlighter[0].generatePiece(aiPiece);
+		highlighter[0].generatePiece(aiPiece+1);
 		highlighter[0].updateTeamNum(3);
 		
 
-		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true)
+		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true && gameOver == false)
 		{
 			myGrid.setCellsTo(highlighter[0].cellChecked, highlighter[0].isCathedral(), highlighter[0].getRotation());
 			//std::cout << "position is valid\n";
-			GameShapes tempShape(aiPiece, 1, highlighter[0].returnOriginPos(), aiRotation);
+			GameShapes tempShape(aiPiece+1, 1, highlighter[0].returnOriginPos(), aiRotation);
 			gamePieces.push_back(tempShape);
 
 			if (teamNum == 0)
@@ -72,8 +87,9 @@ void Game::update()
 			highlighter[0].updateTeamNum(teamNum + 2);
 
 			playersTurn = true;
+			
 
-			highlighter[0].updateOriginPos(lockNearestCell());
+			//highlighter[0].updateOriginPos(lockNearestCell());
 			highlighter[0].rotatePieceRight(rotation);
 			highlighter[0].updateTeamNum(2);
 			highlighter[0].generatePiece(type);
@@ -147,6 +163,7 @@ void Game::update()
 			highlighter[0].updateTeamNum(teamNum + 2);
 
 			playersTurn = false;
+			aiBeganSearch = false;
 			//clickCooldown = 30;
 		}
 	}
@@ -164,7 +181,11 @@ void Game::update()
 void Game::render(sf::RenderWindow& t_window)
 {
 	mousePos = { static_cast<float>(sf::Mouse::getPosition(t_window).x),static_cast<float>(sf::Mouse::getPosition(t_window).y)};
-	highlighter[0].updateOriginPos(lockNearestCell());
+	if (playersTurn == true)
+	{
+		highlighter[0].updateOriginPos(lockNearestCell());
+	}
+	
 	myGrid.render(t_window);
 
 	for (int index = 0; index < gamePieces.size(); index++)
