@@ -6,6 +6,10 @@ void Grid::init()
 	{
 		cells.push_back(Cell(index));
 	}
+	for (int index = 0; index < MAX_CELLS; index++)
+	{
+		cellsByType.push_back(cells[index].getCellType());//store the list of types for the ai to use
+	}
 }
 
 void Grid::update()
@@ -56,7 +60,7 @@ std::vector<Cell> Grid::returnNearbyCellPos()
 	return nearbyCells;
 }
 
-void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rotation)
+void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rotation,int t_teamNum)
 {
 	for (int index = 0; index < t_cellsUsed.size(); index++)
 	{
@@ -68,7 +72,8 @@ void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rot
 
 			if (t_cathedral == false || index != 0)
 			{
-				cells[currentCell].setCellType(1);
+				cells[currentCell].setCellType(t_teamNum);
+				cellsByType[currentCell] = t_teamNum;
 			}
 
 			if (t_cathedral == true && index == 1 && t_rotation == 0)
@@ -76,18 +81,22 @@ void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rot
 				/*std::cout << currentCell << "\n";
 				std::cout << currentCell - GRID_SIZE << "\n";*/
 				cells[currentCell - GRID_SIZE].setCellType(1);
+				cellsByType[currentCell - GRID_SIZE] = t_teamNum;
 			}
 			else if (t_cathedral == true && index == 5 && t_rotation == 1)
 			{
-				cells[currentCell + 1].setCellType(1);
+				cells[currentCell + 1].setCellType(t_teamNum);
+				cellsByType[currentCell +1] = t_teamNum;
 			}
 			else if (t_cathedral == true && index == 7 && t_rotation == 2)
 			{
-				cells[currentCell + GRID_SIZE].setCellType(1);
+				cells[currentCell + GRID_SIZE].setCellType(t_teamNum);
+				cellsByType[currentCell + GRID_SIZE] = t_teamNum;
 			}
 			else if (t_cathedral == true && index == 3 && t_rotation == 3)
 			{
-				cells[currentCell - 1].setCellType(1);
+				cells[currentCell - 1].setCellType(t_teamNum);
+				cellsByType[currentCell - 1] = t_teamNum;
 			}
 		}
 	}
@@ -102,4 +111,9 @@ void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rot
 			}
 		}
 	}*/
+}
+
+std::vector<int> Grid::getAllGridCells()
+{
+	return cellsByType;
 }

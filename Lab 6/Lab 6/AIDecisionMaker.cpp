@@ -45,3 +45,8 @@ int AIDescisionMaker::pickRotation()
 {
 	return 1;
 }
+
+void AIDescisionMaker::giveGridOverview(std::vector<int> t_gridOverview)
+{
+	gridCellTypes = t_gridOverview;
+}

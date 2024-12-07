@@ -41,4 +41,5 @@ private:
 	std::vector<GameShapes> gamePieces;
 	std::vector<GameShapes> highlighter;
 	std::vector<GameShapes> pieceButtons;
+	std::vector<int> gridCellTypes;
 };

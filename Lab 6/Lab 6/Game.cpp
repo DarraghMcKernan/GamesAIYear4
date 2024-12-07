@@ -49,8 +49,9 @@ void Game::update()
 		clickCooldown = 0;
 		if (aiBeganSearch == false)
 		{
+			myAI.giveGridOverview(gridCellTypes);
 			aiPiece = myAI.pickPieceToPlace();
-			std::cout << aiPiece << " AI PIECE CHOSEN\n";
+			std::cout << aiPiece+1 << " AI PIECE CHOSEN\n";
 			if (aiPiece < 0)//no more valid pieces - end the game
 			{
 				gameOver = true;
@@ -71,7 +72,7 @@ void Game::update()
 
 		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true && gameOver == false)
 		{
-			myGrid.setCellsTo(highlighter[0].cellChecked, highlighter[0].isCathedral(), highlighter[0].getRotation());
+			myGrid.setCellsTo(highlighter[0].cellChecked, highlighter[0].isCathedral(), highlighter[0].getRotation(),teamNum+2);
 			//std::cout << "position is valid\n";
 			GameShapes tempShape(aiPiece+1, 1, highlighter[0].returnOriginPos(), aiRotation);
 			gamePieces.push_back(tempShape);
@@ -147,7 +148,7 @@ void Game::update()
 		clickCooldown = 30;
 		if (highlighter[0].checkCollisions(myGrid.returnNearbyCellPos()) == true)
 		{
-			myGrid.setCellsTo(highlighter[0].cellChecked,highlighter[0].isCathedral(), highlighter[0].getRotation());
+			myGrid.setCellsTo(highlighter[0].cellChecked,highlighter[0].isCathedral(), highlighter[0].getRotation(), teamNum+2);
 			//std::cout << "position is valid\n";
 			GameShapes tempShape(type, teamNum, highlighter[0].returnOriginPos(), rotation);
 			gamePieces.push_back(tempShape);
@@ -165,6 +166,8 @@ void Game::update()
 			playersTurn = false;
 			aiBeganSearch = false;
 			//clickCooldown = 30;
+
+			gridCellTypes = myGrid.getAllGridCells();
 		}
 	}
 
