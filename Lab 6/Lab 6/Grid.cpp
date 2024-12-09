@@ -62,6 +62,7 @@ std::vector<Cell> Grid::returnNearbyCellPos()
 
 void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rotation,int t_teamNum)
 {
+	//cellsByType.clear();
 	for (int index = 0; index < t_cellsUsed.size(); index++)
 	{
 		if (t_cellsUsed[index] == true)

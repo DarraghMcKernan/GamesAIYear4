@@ -64,6 +64,7 @@ std::vector<int> AIDescisionMaker::checkThisCollisionAllowed(int t_pieceType)
 {
 	std::vector<int>pieceShapesPositions;
 	std::vector<int>validCellPositions;
+	int counter = 0;
 
 	//this is awful but its too late for me to care :)
 	if (t_pieceType == 0)
@@ -173,55 +174,58 @@ std::vector<int> AIDescisionMaker::checkThisCollisionAllowed(int t_pieceType)
 	//	}
 	//}
 
-	for (int row = 1; row <= 10; ++row)
+	for (int row = 1; row <= 10; ++row)//doesnt seem to update cell list every time
 	{
 		for (int col = 1; col <= 10; ++col)
 		{
-			bool isValid = false;//look for any overlapping celles
-			int cellWeCurrentlyChecking = row * 12 + col;
-			std::cout << "\n" + cellWeCurrentlyChecking;
+			bool isValid = true;//look for any overlapping celles
+			int cellWeCurrentlyChecking = col * 12 + row;
+			//std::cout << "\n" + cellWeCurrentlyChecking;
 			//why doesnt this work :(
 			//im far too tired for this shit
-			//this is actual nonsense tf am i typing 
-			if (pieceShapesPositions[0] == 1 && gridCellTypes[cellWeCurrentlyChecking - 1 - 12] ==0)
+			//this is actual nonsense tf am i typing
+			//after sleeping i realised i had row and col the wrong way around lm
+			if (pieceShapesPositions[0] != 0 && gridCellTypes[cellWeCurrentlyChecking - 1 - 12] !=0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[1] == 1 && gridCellTypes[cellWeCurrentlyChecking - 12] == 0)
+			if (pieceShapesPositions[1] != 0 && gridCellTypes[cellWeCurrentlyChecking - 12] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[2] == 1 && gridCellTypes[cellWeCurrentlyChecking + 1 - 12] == 0)
+			if (pieceShapesPositions[2] != 0 && gridCellTypes[cellWeCurrentlyChecking + 1 - 12] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[3] == 1 && gridCellTypes[cellWeCurrentlyChecking - 1] == 0)
+			if (pieceShapesPositions[3] != 0 && gridCellTypes[cellWeCurrentlyChecking - 1] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[4] == 1 && gridCellTypes[cellWeCurrentlyChecking] == 0)
+			if (pieceShapesPositions[4] != 0 && gridCellTypes[cellWeCurrentlyChecking] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[5] == 1 && gridCellTypes[cellWeCurrentlyChecking + 1] == 0)
+			if (pieceShapesPositions[5] != 0 && gridCellTypes[cellWeCurrentlyChecking + 1] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[6] == 1 && gridCellTypes[cellWeCurrentlyChecking - 1 + 12] == 0)
+			if (pieceShapesPositions[6] != 0 && gridCellTypes[cellWeCurrentlyChecking - 1 + 12] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[7] == 1 && gridCellTypes[cellWeCurrentlyChecking + 12] == 0)
+			if (pieceShapesPositions[7] != 0 && gridCellTypes[cellWeCurrentlyChecking + 12] != 0)
 			{
 				isValid = false;
 			}
-			if (pieceShapesPositions[8] == 1 && gridCellTypes[cellWeCurrentlyChecking + 1 + 12] == 0)
+			if (pieceShapesPositions[8] != 0 && gridCellTypes[cellWeCurrentlyChecking + 1 + 12] != 0)
 			{
 				isValid = false;
 			}
 
 			if (isValid==true)
 			{
+				//counter++;
+				//std::cout << "\n" << counter << "cell current " << cellWeCurrentlyChecking << "\n";
 				validCellPositions.push_back(cellWeCurrentlyChecking);//put the middle cell back in
 			}
 		}

@@ -182,7 +182,7 @@ void Game::update()
 				highlighter[0].positionToSetUsed;
 				
 			}*/
-
+			gridCellTypes.clear();
 			gridCellTypes = myGrid.getAllGridCells();
 		}
 	}
