@@ -36,6 +36,10 @@ public:
 
 	std::vector<int> checkThisCollisionAllowed(int t_pieceType);
 
+	int minimax(std::vector<int> board, int depth, bool maximising,int piece);
+	int evaluateBoard(std::vector<int> board);
+	std::vector<int> returnUpdatedGrid(std::vector<int> board, int cellToPlaceOn, int type,bool t_player);
+
 	/**
 	* @brief The best piece the ai has picked
 	*/
@@ -58,4 +62,7 @@ private:
 	* @brief this can be used to check if a move is valid or more valuable
 	*/
 	std::vector<int> gridCellTypes;
+
+	int movesTaken = 0;
+	int maxDepth = 2;
 };
