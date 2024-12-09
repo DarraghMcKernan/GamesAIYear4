@@ -12,28 +12,32 @@ void AIDescisionMaker::update()
 
 int AIDescisionMaker::pickCellToPlace()
 {
-	int pieceToCheck = pickPieceToPlace() + 1;
+	int pieceToCheck = pickPieceToPlace() + 1;//used to remove invalid cells from the grid to reduce cells needed to be checked
 	std::vector<int> validMoves = checkThisCollisionAllowed(pieceToCheck);
-	if (validMoves.empty())
+	if (validMoves.empty())//if all the cells are used up the game is over
 	{
 		return -1;
 	}
+	movesTaken = 0;//used for debugging
 
-	int bestMove = validMoves[0];
-	int bestScore = -999999;
+	int bestMove = validMoves[0];//best move is first move by default
+	int bestScore = -999999;//best score is really low to begin
 
-	for (int move : validMoves) 
+	for (int pieceType = 11; pieceType > 0; pieceType--)
 	{
-		std::vector<int> nextBoard = gridCellTypes;
-		//nextBoard = returnUpdatedGrid(nextBoard,move,bestPiece+1);
-		int score = minimax(nextBoard, 0, false,pieceToCheck);
-		if (score > bestScore) 
+		for (int move = 0; move < validMoves.size(); move++)
 		{
-			bestScore = score;
-			bestMove = move;
+			std::vector<int> nextGrid = gridCellTypes;
+			//nextGrid = returnUpdatedGrid(nextGrid,move,bestPiece+1);
+			int score = minimax(nextGrid, 0, false, pieceType);
+			if (score > bestScore)//if the found score is better we use it
+			{
+				bestScore = score;
+				bestMove = validMoves[move];
+			}
 		}
+		std::cout << "Total minimax calls: " << movesTaken << "\n";
 	}
-	std::cout << "Total minimax calls: " << movesTaken << "\n";
 	return bestMove;
 }
 
@@ -76,21 +80,21 @@ void AIDescisionMaker::giveGridOverview(std::vector<int> t_gridOverview)
 	gridCellTypes = t_gridOverview;
 }
 
-int AIDescisionMaker::minimax(std::vector<int> board, int depth, bool maximizingPlayer, int piece) {
-	if (depth == maxDepth)
+int AIDescisionMaker::minimax(std::vector<int> t_newGrid, int t_depth, bool t_maximizingPlayer, int t_piece) {
+	if (t_depth == maxDepth)
 	{
 		//std::cout << "Max Reached\n";
-		return evaluateBoard(board);//stop here and return amount of pieces placed in simulation
+		return evaluateBoard(t_newGrid);//stop here and return amount of pieces placed in simulation
 	}
 	movesTaken++;
-	if (maximizingPlayer) {
+	if (t_maximizingPlayer) {
 		int bestScore = -999999;
-		for (int cellToCheck = 0; cellToCheck < board.size(); cellToCheck++)
+		for (int cellToCheck = 0; cellToCheck < t_newGrid.size(); cellToCheck++)
 		{
-			if (board[cellToCheck] == 0)
+			if (t_newGrid[cellToCheck] == 0)
 			{
-				std::vector<int> nextBoard = returnUpdatedGrid(board, cellToCheck, piece, true);
-				bestScore = std::max(bestScore, minimax(nextBoard, depth + 1, false, piece));
+				std::vector<int> nextGrid = returnUpdatedGrid(t_newGrid, cellToCheck, t_piece, true);
+				bestScore = std::max(bestScore, minimax(nextGrid, t_depth + 1, false, t_piece));
 			}
 		}
 		return bestScore;
@@ -98,12 +102,12 @@ int AIDescisionMaker::minimax(std::vector<int> board, int depth, bool maximizing
 	else
 	{
 		int bestScore = 999999;
-		for(int cellToCheck = 0;cellToCheck < board.size();cellToCheck++)
+		for(int cellToCheck = 0;cellToCheck < t_newGrid.size();cellToCheck++)
 		{
-			if (board[cellToCheck] == 0)
+			if (t_newGrid[cellToCheck] == 0)
 			{
-				std::vector<int> nextBoard = returnUpdatedGrid(board, cellToCheck, piece, false);
-				bestScore = std::min(bestScore, minimax(nextBoard, depth + 1, true, piece));
+				std::vector<int> nextGrid = returnUpdatedGrid(t_newGrid, cellToCheck, t_piece, false);
+				bestScore = std::min(bestScore, minimax(nextGrid, t_depth + 1, true, t_piece));
 			}
 			
 		}
@@ -111,12 +115,12 @@ int AIDescisionMaker::minimax(std::vector<int> board, int depth, bool maximizing
 	}
 }
 
-int AIDescisionMaker::evaluateBoard(std::vector<int> board)
+int AIDescisionMaker::evaluateBoard(std::vector<int> t_newGrid)
 {	
 	int aiPieceCount = 0;
-	for (int index = 0;index < board.size();index++) 
+	for (int index = 0;index < t_newGrid.size();index++)
 	{
-		if (board[index] == 3)
+		if (t_newGrid[index] == 3)
 		{
 			aiPieceCount++;
 		}
@@ -124,7 +128,7 @@ int AIDescisionMaker::evaluateBoard(std::vector<int> board)
 	return aiPieceCount;
 }
 
-std::vector<int> AIDescisionMaker::returnUpdatedGrid(std::vector<int> board, int cellToPlaceOn, int t_pieceType,bool t_player)
+std::vector<int> AIDescisionMaker::returnUpdatedGrid(std::vector<int> t_newGrid, int t_cellToPlaceOn, int t_pieceType,bool t_player)
 {
 	std::vector<int> pieceShapesPositions;
 
@@ -220,46 +224,46 @@ std::vector<int> AIDescisionMaker::returnUpdatedGrid(std::vector<int> board, int
 	}
 
 	//this is yet again an awful way to do this :D
-	if (board[cellToPlaceOn - GRID_SIZE - 1] == 0)
+	if (t_newGrid[t_cellToPlaceOn - GRID_SIZE - 1] == 0)
 	{
-		board[cellToPlaceOn - GRID_SIZE - 1] = pieceShapesPositions[0] * 3;
+		t_newGrid[t_cellToPlaceOn - GRID_SIZE - 1] = pieceShapesPositions[0] * 3;
 	}
-	if (board[cellToPlaceOn - GRID_SIZE] == 0)
+	if (t_newGrid[t_cellToPlaceOn - GRID_SIZE] == 0)
 	{
-		board[cellToPlaceOn - GRID_SIZE] = pieceShapesPositions[1] * playerCell;
+		t_newGrid[t_cellToPlaceOn - GRID_SIZE] = pieceShapesPositions[1] * playerCell;
 	}
-	if (board[cellToPlaceOn - GRID_SIZE + 1] == 0)
+	if (t_newGrid[t_cellToPlaceOn - GRID_SIZE + 1] == 0)
 	{
-		board[cellToPlaceOn - GRID_SIZE + 1] = pieceShapesPositions[2] * playerCell;
-	}
-
-	if (board[cellToPlaceOn - 1] == 0)
-	{
-		board[cellToPlaceOn - 1] = pieceShapesPositions[3] * playerCell;
-	}
-	if (board[cellToPlaceOn] == 0)
-	{
-		board[cellToPlaceOn] = pieceShapesPositions[4] * playerCell;
-	}
-	if (board[cellToPlaceOn + 1] == 0)
-	{
-		board[cellToPlaceOn + 1] = pieceShapesPositions[5] * playerCell;
+		t_newGrid[t_cellToPlaceOn - GRID_SIZE + 1] = pieceShapesPositions[2] * playerCell;
 	}
 
-	if (board[cellToPlaceOn + GRID_SIZE - 1] == 0)
+	if (t_newGrid[t_cellToPlaceOn - 1] == 0)
 	{
-		board[cellToPlaceOn + GRID_SIZE - 1] = pieceShapesPositions[6] * playerCell;
+		t_newGrid[t_cellToPlaceOn - 1] = pieceShapesPositions[3] * playerCell;
 	}
-	if (board[cellToPlaceOn + GRID_SIZE] == 0)
+	if (t_newGrid[t_cellToPlaceOn] == 0)
 	{
-		board[cellToPlaceOn + GRID_SIZE] = pieceShapesPositions[7] * playerCell;
+		t_newGrid[t_cellToPlaceOn] = pieceShapesPositions[4] * playerCell;
 	}
-	if (board[cellToPlaceOn + GRID_SIZE + 1] == 0)
+	if (t_newGrid[t_cellToPlaceOn + 1] == 0)
 	{
-		board[cellToPlaceOn + GRID_SIZE + 1] = pieceShapesPositions[8] * playerCell;
+		t_newGrid[t_cellToPlaceOn + 1] = pieceShapesPositions[5] * playerCell;
 	}
 
-	return board;
+	if (t_newGrid[t_cellToPlaceOn + GRID_SIZE - 1] == 0)
+	{
+		t_newGrid[t_cellToPlaceOn + GRID_SIZE - 1] = pieceShapesPositions[6] * playerCell;
+	}
+	if (t_newGrid[t_cellToPlaceOn + GRID_SIZE] == 0)
+	{
+		t_newGrid[t_cellToPlaceOn + GRID_SIZE] = pieceShapesPositions[7] * playerCell;
+	}
+	if (t_newGrid[t_cellToPlaceOn + GRID_SIZE + 1] == 0)
+	{
+		t_newGrid[t_cellToPlaceOn + GRID_SIZE + 1] = pieceShapesPositions[8] * playerCell;
+	}
+
+	return t_newGrid;
 }
 
 std::vector<int> AIDescisionMaker::checkThisCollisionAllowed(int t_pieceType)

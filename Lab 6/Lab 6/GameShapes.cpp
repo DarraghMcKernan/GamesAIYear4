@@ -384,13 +384,6 @@ bool GameShapes::checkCollisions(std::vector<Cell> t_nearbyCells)
 	return false;
 }
 
-bool GameShapes::checkIfPieceUsed(int t_pieceNum)
-{
-
-
-	return false;
-}
-
 bool GameShapes::isCathedral()
 {
 	if (type == 0)
@@ -403,11 +396,6 @@ bool GameShapes::isCathedral()
 int GameShapes::getRotation()
 {
 	return rotation;
-}
-
-void GameShapes::scalePiece(float t_scale)
-{
-
 }
 
 int GameShapes::getHoveredType(sf::Vector2f t_mousePos)

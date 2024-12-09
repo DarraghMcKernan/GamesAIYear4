@@ -18,7 +18,7 @@ public:
      */
     void update();
     /**
-     * @brief Renders the cell on the given render window
+     * @brief renders the cell on the given render window
      * @param t_window Reference to the SFML render window
      */
     void render(sf::RenderWindow& t_window);
@@ -30,8 +30,8 @@ public:
     /**
      * @brief Returns the type of the cell
      * @return An integer representing the cell type:
-     *         - 0: Empty cell
-     *         - 1: Board border wall
+     * - 0: Empty cell
+     * - 1: Board border wall
      */
     int getCellType();
     /**
