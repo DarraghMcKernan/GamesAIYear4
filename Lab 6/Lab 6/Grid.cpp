@@ -100,20 +100,20 @@ void Grid::setCellsTo(std::vector<bool> t_cellsUsed, bool t_cathedral, int t_rot
 			}
 		}
 	}
-
-	/*for (int row = -1; row < 1; row++)
-	{
-		for (int col = -1; col < 1; col++)
-		{
-			if (t_cellsUsed[(row + 1) * (col + 1)] == true)
-			{
-				cells[cellHoveredNumber + (row * (col * GRID_SIZE))].setCellType(1);
-			}
-		}
-	}*/
 }
 
 std::vector<int> Grid::getAllGridCells()
 {
 	return cellsByType;
+}
+
+void Grid::setCellAsUsed(sf::Vector2f t_cellPosition)
+{
+	for (int index = 0; index < MAX_CELLS; index++)
+	{
+		if (cells[index].getCellShape().getGlobalBounds().contains(t_cellPosition))
+		{
+			cells[index].setCellType(2);//should be ram=
+		}
+	}
 }

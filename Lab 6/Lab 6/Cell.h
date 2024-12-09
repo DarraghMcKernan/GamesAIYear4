@@ -1,56 +1,56 @@
 #pragma once
 #include "globals.h"
 
+/**
+ * @class Cell
+ * @brief Represents a single cell in the grid and holds its position, type and shape
+ */
 class Cell
 {
 public:
-	/// <summary>
-	/// Default constructor of a cell that will take in its number
-	/// on the grid and will set its position according to this
-	/// </summary>
-	/// <param name="t_cellNum"></param>
-	Cell(int t_cellNum);
-	/// <summary>
-	/// Used to update the cells
-	/// </summary>
-	void update();
-	/// <summary>
-	/// Used to render the cells
-	/// </summary>
-	/// <param name="t_window"></param>
-	void render(sf::RenderWindow& t_window);
-	/// <summary>
-	/// Returns the sf::RectangleShape that is used to represent this specific cell
-	/// Can be used to check collisions or get positions
-	/// </summary>
-	/// <returns></returns>
-	sf::RectangleShape getCellShape();
-	/// <summary>
-	/// Returns an int that represents what type of cell this is
-	/// 0 - empty cell
-	/// 1 - board border wall
-	/// </summary>
-	/// <returns></returns>
-	int getCellType();
-	/// <summary>
-	/// Used to set the cell type
-	/// 1 is used to signify it has been used
-	/// </summary>
-	/// <param name="t_type"></param>
-	void setCellType(int t_type);
+    /**
+     * @brief Constructs a cell using its number on the grid and sets its position
+     * @param t_cellNum The cell's number in the grid
+     */
+    Cell(int t_cellNum);
+    /**
+     * @brief Updates the state of the cell
+     */
+    void update();
+    /**
+     * @brief Renders the cell on the given render window
+     * @param t_window Reference to the SFML render window
+     */
+    void render(sf::RenderWindow& t_window);
+    /**
+     * @brief Returns the sf::RectangleShape representing the cell
+     * @return The sf::RectangleShape object used for this cell
+     */
+    sf::RectangleShape getCellShape();
+    /**
+     * @brief Returns the type of the cell
+     * @return An integer representing the cell type:
+     *         - 0: Empty cell
+     *         - 1: Board border wall
+     */
+    int getCellType();
+    /**
+     * @brief Sets the type of the cell
+     * @param t_type An integer representing the cell type - 0 means it is unused
+     */
+    void setCellType(int t_type);
 
 private:
-	/// <summary>
-	/// Variable to hold this cells number in the grid
-	/// </summary>
-	int cellNum = 0;
-	/// <summary>
-	/// Variable used to identify what type of cell this is
-	/// </summary>
-	int type = 0;
-
-	/// <summary>
-	/// The shape used to represnt this specific cell
-	/// </summary>
-	sf::RectangleShape cellShape;
+    /**
+     * @brief The cells number in the grid
+     */
+    int cellNum = 0;
+    /**
+     * @brief The type of the cell
+     */
+    int type = 0;
+    /**
+     * @brief The shape representing this specific cell
+     */
+    sf::RectangleShape cellShape;
 };

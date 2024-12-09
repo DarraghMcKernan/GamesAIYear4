@@ -12,7 +12,7 @@ public:
 	std::vector<Cell> returnNearbyCellPos();
 	void setCellsTo(std::vector<bool> t_cellsUsed,bool t_cathedral,int t_rotation,int t_teamNum);
 	std::vector<int> getAllGridCells();
-
+	void setCellAsUsed(sf::Vector2f t_cellPosition);
 private:
 	std::vector<Cell> cells;
 	std::vector<int> cellsByType;

@@ -12,9 +12,13 @@ void AIDescisionMaker::update()
 
 int AIDescisionMaker::pickCellToPlace()
 {
-	chosenCell = rand() % MAX_CELLS;
+	std::vector<int>validCellPositions = checkThisCollisionAllowed(pickPieceToPlace()+1);
+
+	chosenCell = rand() % validCellPositions.size();
+
+
 	
-	return chosenCell;
+	return validCellPositions[chosenCell];
 }
 
 //the more shapes that make up the piece the higher its value
@@ -25,9 +29,11 @@ int AIDescisionMaker::pickCellToPlace()
 
 	// also can check if a position is optimal as it will be near a friendly tile - type 1 is invalid(wall), 2 is player, 3 is AI
 
+//a good move will let us place a high value piece and make the player place a low value piece
+
 int AIDescisionMaker::pickPieceToPlace() 
 {
-	int bestPiece = currentPiece;
+	bestPiece = currentPiece;
 	AIPiecesUsed[currentPiece]++;
 	if (currentPiece <= 3)
 	{
@@ -46,10 +52,180 @@ int AIDescisionMaker::pickPieceToPlace()
 
 int AIDescisionMaker::pickRotation()
 {
-	return 1;
+	return 0;
 }
 
 void AIDescisionMaker::giveGridOverview(std::vector<int> t_gridOverview)
 {
 	gridCellTypes = t_gridOverview;
+}
+
+std::vector<int> AIDescisionMaker::checkThisCollisionAllowed(int t_pieceType)
+{
+	std::vector<int>pieceShapesPositions;
+	std::vector<int>validCellPositions;
+
+	//this is awful but its too late for me to care :)
+	if (t_pieceType == 0)
+	{
+		pieceShapesPositions =
+		{ 0,1,0
+		 ,1,1,1
+		 ,0,1,0 };
+	}
+	else if (t_pieceType == 1)
+	{
+		pieceShapesPositions =
+		{ 0,0,0
+		,0,1,0
+		,0,0,0 };
+	}
+	else if (t_pieceType == 2)
+	{
+		pieceShapesPositions =
+		{ 0,1,0
+		,0,1,0
+		,0,0,0 };
+	}
+	else if (t_pieceType == 3)
+	{
+		pieceShapesPositions =
+		{ 0,1,0
+		,1,1,0
+		,0,0,0 };
+	}
+	else if (t_pieceType == 4)
+	{
+		pieceShapesPositions =
+		{ 0,1,0
+		,0,1,0
+		,0,1,0 };
+	}
+	else if (t_pieceType == 5)
+	{
+		pieceShapesPositions =
+		{ 1,1,0
+		,1,1,0
+		,0,0,0 };
+	}
+	else if (t_pieceType == 6)
+	{
+		pieceShapesPositions =
+		{ 0,1,0
+		,1,1,0
+		,0,1,0 };
+	}
+	else if (t_pieceType == 7)
+	{
+		pieceShapesPositions =
+		{ 0,1,1
+		,1,1,0
+		,0,0,0 };
+	}
+	else if (t_pieceType == 8)
+	{
+		pieceShapesPositions =
+		{ 1,1,0
+		,0,1,1
+		,0,1,0 };
+	}
+	else if (t_pieceType == 9)
+	{
+		pieceShapesPositions =
+		{ 0,1,0
+		,1,1,1
+		,0,1,0 };
+	}
+	else if (t_pieceType == 10)
+	{
+		pieceShapesPositions =
+		{ 0,0,0
+		,1,1,1
+		,1,0,1 };
+	}
+	else if (t_pieceType == 11)
+	{
+		pieceShapesPositions =
+		{ 0,1,1
+		,1,1,0
+		,1,0,0 };
+	}
+
+	//the cell is the center and move that along to check the whole grid
+	//grid is 12*12 outer layer is walls so skip cells 0 - 11
+	/*for (int index = 0; index < gridCellTypes.size(); index++)
+	{
+		if (gridCellTypes[index] / 12 != 0 && gridCellTypes[index] / 12 != 11 && gridCellTypes[index] % 12 != 0 && gridCellTypes[index] % 12 != 11)
+		{
+
+		}
+	}*/
+
+	//for (int cells = 0; cells < t_nearbyCells.size(); cells++)
+	//{
+	//	for (int index = 0; index < piecesNeeded; index++)
+	//	{
+	//		if (pieceShapes[index].getGlobalBounds().intersects(t_nearbyCells[cells].getCellShape().getGlobalBounds()) && (t_nearbyCells[index].getCellType() == 0) && cellChecked[index] == false)
+	//		{
+	//			cellChecked[index] = true;
+	//			continue;//found a cell for the piece - look for more
+	//		}
+	//	}
+	//}
+
+	for (int row = 1; row <= 10; ++row)
+	{
+		for (int col = 1; col <= 10; ++col)
+		{
+			bool isValid = false;//look for any overlapping celles
+			int cellWeCurrentlyChecking = row * 12 + col;
+			std::cout << "\n" + cellWeCurrentlyChecking;
+			//why doesnt this work :(
+			//im far too tired for this shit
+			//this is actual nonsense tf am i typing 
+			if (pieceShapesPositions[0] == 1 && gridCellTypes[cellWeCurrentlyChecking - 1 - 12] ==0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[1] == 1 && gridCellTypes[cellWeCurrentlyChecking - 12] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[2] == 1 && gridCellTypes[cellWeCurrentlyChecking + 1 - 12] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[3] == 1 && gridCellTypes[cellWeCurrentlyChecking - 1] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[4] == 1 && gridCellTypes[cellWeCurrentlyChecking] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[5] == 1 && gridCellTypes[cellWeCurrentlyChecking + 1] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[6] == 1 && gridCellTypes[cellWeCurrentlyChecking - 1 + 12] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[7] == 1 && gridCellTypes[cellWeCurrentlyChecking + 12] == 0)
+			{
+				isValid = false;
+			}
+			if (pieceShapesPositions[8] == 1 && gridCellTypes[cellWeCurrentlyChecking + 1 + 12] == 0)
+			{
+				isValid = false;
+			}
+
+			if (isValid==true)
+			{
+				validCellPositions.push_back(cellWeCurrentlyChecking);//put the middle cell back in
+			}
+		}
+	}
+
+	return validCellPositions;//list of all good positions for the cells
 }

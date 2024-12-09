@@ -29,9 +29,9 @@ private:
 	int aiCell = 0;
 
 	/**
-	* 
-	* 
-	*/
+	 * . . . test comment . . .
+	 * 
+	 */
 	bool placementValid = true;
 	bool pieceSelected = false;
 	bool playersTurn = true;

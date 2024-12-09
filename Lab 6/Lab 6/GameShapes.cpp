@@ -211,21 +211,29 @@ void GameShapes::generatePiece(int t_shapeType)
 		{//the last piece will be 1 out from the rotation corner
 			offsetPos.y -= CELL_SIZE;
 			pieceShapes[0].setPosition(offsetPos);//set last piece as the offset
+			cathedralEdgeCase = true;
+			positionToSetUsed = offsetPos;
 		}
 		else if (type == 0 && index == 5 && rotation == 1)
 		{
 			offsetPos.x += CELL_SIZE;
 			pieceShapes[0].setPosition(offsetPos);
+			cathedralEdgeCase = true;
+			positionToSetUsed = offsetPos;
 		}
 		else if (type == 0 && index == 7 && rotation == 2)
 		{
 			offsetPos.y += CELL_SIZE;
 			pieceShapes[0].setPosition(offsetPos);
+			cathedralEdgeCase = true;
+			positionToSetUsed = offsetPos;
 		}
 		else if (type == 0 && index == 3 && rotation == 3)
 		{
 			offsetPos.x -= CELL_SIZE;
 			pieceShapes[0].setPosition(offsetPos);
+			cathedralEdgeCase = true;
+			positionToSetUsed = offsetPos;
 		}
 	}
 }

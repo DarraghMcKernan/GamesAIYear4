@@ -7,7 +7,7 @@ void Game::init()
 	GameShapes highlighterShape(0, 2, { mousePos.x ,mousePos.y }, 0);
 	highlighter.push_back(highlighterShape);
 
-	for(int index = 0;index < PIECES_PER_TEAM-4;index++)
+	for(int index = 0;index < PIECES_PER_TEAM-3;index++)
 	{
 		int rotation = 1;
 		sf::Vector2f startPos = { 1050.0f + ((index % 3) * CELL_SIZE * 4), 150.0f + (250 * (index / 3)) };
@@ -23,7 +23,14 @@ void Game::init()
 		{
 			rotation = 2;
 			startPos.y += 25;
-			startPos.x += 300;
+			startPos.x += 150;
+		}
+		if (index == 10)
+		{
+			std::cout << "test\n";
+			rotation = 3;
+			startPos.y -= 50;
+			startPos.x += 225;
 		}
 		GameShapes tempButtons(index + 1, 0, startPos, rotation);
 		pieceButtons.push_back(tempButtons);
@@ -49,18 +56,20 @@ void Game::update()
 		clickCooldown = 0;
 		if (aiBeganSearch == false)
 		{
+
 			myAI.giveGridOverview(gridCellTypes);
-			aiPiece = myAI.pickPieceToPlace();
+			aiCell = myAI.pickCellToPlace();
+			aiPiece = myAI.bestPiece;
 			std::cout << aiPiece+1 << " AI PIECE CHOSEN\n";
 			if (aiPiece < 0)//no more valid pieces - end the game
 			{
 				gameOver = true;
 			}
-			aiRotation = myAI.pickRotation();
+			//aiRotation = myAI.pickRotation();
 
 			aiBeganSearch = true;
 		}
-		aiCell = myAI.pickCellToPlace();
+		
 
 		
 
@@ -100,7 +109,7 @@ void Game::update()
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && pieceSelected == false)
 	{
-		for (int index = 0; index < PIECES_PER_TEAM - 4; index++)
+		for (int index = 0; index < PIECES_PER_TEAM - 3; index++)
 		{			
 			int temp = pieceButtons[index].getHoveredType(mousePos);
 			if (highlighter[0].pieceAllowed(temp) == true)
@@ -167,6 +176,13 @@ void Game::update()
 			aiBeganSearch = false;
 			//clickCooldown = 30;
 
+			/*if (highlighter[0].cathedralEdgeCase == true)
+			{
+				highlighter[0].cathedralEdgeCase = false;
+				highlighter[0].positionToSetUsed;
+				
+			}*/
+
 			gridCellTypes = myGrid.getAllGridCells();
 		}
 	}
@@ -197,7 +213,7 @@ void Game::render(sf::RenderWindow& t_window)
 	}
 	highlighter[0].render(t_window);
 
-	for (int index = 0; index < PIECES_PER_TEAM-4 ; index++)
+	for (int index = 0; index < PIECES_PER_TEAM-3 ; index++)
 	{
 		pieceButtons[index].render(t_window);
 	}

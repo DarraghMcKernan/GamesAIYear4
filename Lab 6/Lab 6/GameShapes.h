@@ -26,6 +26,9 @@ public:
 	void deactivateButton();
 	std::vector<int> getMatrixOfCells();
 
+	bool cathedralEdgeCase = false;
+	sf::Vector2f positionToSetUsed;
+
 private:
 	int type;
 	int team;
